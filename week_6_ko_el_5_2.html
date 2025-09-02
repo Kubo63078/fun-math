@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분수 곱셈 활용하기 - 5학년 수학</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 분수 표시 스타일 */
+        .fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 3px;
+            font-size: inherit;
+            font-weight: inherit;
+        }
+        
+        .fraction .num {
+            display: block;
+            border-bottom: 2px solid currentColor;
+            padding: 0 5px 2px 5px;
+            line-height: 1.2;
+        }
+        
+        .fraction .denom {
+            display: block;
+            padding: 2px 5px 0 5px;
+            line-height: 1.2;
+        }
+        
+        .mixed-number {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .mixed-number .whole {
+            font-size: 1em;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .slide {
+            width: 95%;
+            max-width: 1400px;
+            height: 85%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            text-align: center;
+            position: relative;
+            overflow-y: auto;
+            border: 5px solid #FFD93D;
+        }
+        
+        .slide.active {
+            display: flex;
+            animation: bounceIn 0.8s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-10deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05) rotate(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        .navigation-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .slide-counter {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .horizontal-layout {
+            display: flex;
+            height: 100%;
+            gap: 20px;
+            align-items: stretch;
+        }
+        
+        .left-column {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+            padding-right: 10px;
+        }
+        
+        .right-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #2C3E50;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: rainbow-text 3s ease-in-out infinite;
+        }
+        
+        @keyframes rainbow-text {
+            0%, 100% { color: #2C3E50; }
+            25% { color: #E74C3C; }
+            50% { color: #3498DB; }
+            75% { color: #9B59B6; }
+        }
+        
+        h2 {
+            font-size: 2rem;
+            color: #E74C3C;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            color: #3498DB;
+            margin-bottom: 10px;
+        }
+        
+        .learning-objective {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            margin: 5px auto;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .activity-box {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            color: #2c3e50;
+            padding: 10px;
+            border-radius: 12px;
+            margin: 5px auto;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px solid #FF6B6B;
+        }
+        
+        .example-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #2c3e50;
+            padding: 10px;
+            border-radius: 12px;
+            margin: 5px auto;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px solid #4ECDC4;
+        }
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .problem-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #FFD93D;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-color: #FF6B6B;
+        }
+        
+        .big-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #FF6B6B;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin: 5px 0;
+        }
+        
+        .fraction-visual {
+            background: white;
+            border: 3px solid #4ECDC4;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 600px;
+        }
+        
+        .big-fraction {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 0 10px;
+        }
+        
+        .big-fraction .numerator {
+            display: block;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 3px;
+            font-size: 1em;
+            line-height: 1;
+        }
+        
+        .big-fraction .denominator {
+            display: block;
+            padding-top: 3px;
+            font-size: 1em;
+            line-height: 1;
+        }
+        
+        .quiz-container {
+            background: linear-gradient(135deg, #FFE066, #FF6B35);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .quiz-option {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .quiz-option:hover {
+            border-color: #4ECDC4;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .quiz-option.correct {
+            background: #2ECC71;
+            color: white;
+            border-color: #27AE60;
+        }
+        
+        .quiz-option.wrong {
+            background: #E74C3C;
+            color: white;
+            border-color: #C0392B;
+        }
+        
+        .celebration {
+            font-size: 3rem;
+            animation: celebrate 1s ease infinite;
+        }
+        
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2) rotate(10deg); }
+        }
+        
+        .step-animation {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .side-by-side {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .side-by-side > div {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .word-problem {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 10px 0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+        
+        .solution-steps {
+            background: white;
+            border: 3px solid #4ECDC4;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px 0;
+            text-align: left;
+        }
+        
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4ECDC4;
+        }
+        
+        .compact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .game-board {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .game-item {
+            background: white;
+            color: #2c3e50;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 8px;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .game-item:hover {
+            transform: scale(1.1);
+            background: #FFD93D;
+        }
+        
+        .game-item.matched {
+            background: #2ECC71;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .horizontal-layout {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .left-column, .right-column {
+                flex: none;
+            }
+            
+            .side-by-side {
+                flex-direction: column;
+            }
+            
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .big-number { font-size: 2rem; }
+            .big-fraction { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        
+        <!-- 슬라이드 1: 제목 -->
+        <div class="slide active">
+            <div class="horizontal-layout">
+                <div class="left-column">
+                    <h1>📊 분수 곱셈 활용하기</h1>
+                    <h2>🎯 생활 속에서 분수 곱셈 문제 해결하기</h2>
+                    <div class="learning-objective">
+                        <h3>🌟 오늘 배울 내용</h3>
+                        <p>✅ 실생활 문제에서 분수 곱셈 활용하기</p>
+                        <p>✅ 단계적 문제 해결 전략 익히기</p>
+                        <p>✅ 분수 곱셈의 의미 완전히 이해하기</p>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <div style="font-size: 8rem;">🧮</div>
+                    <h3 style="margin-top: 20px;">5학년 2학기</h3>
+                    <p style="font-size: 1.3rem; margin-top: 10px;">분수의 곱셈 - 6주차</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 2: 학습목표 -->
+        <div class="slide">
+            <h2>🎯 학습 목표</h2>
+            <div class="compact-grid">
+                <div class="activity-box">
+                    <h3>🍕 실생활 활용</h3>
+                    <p>피자, 케이크, 과자 등의 나누기 상황에서 분수 곱셈을 활용할 수 있어요!</p>
+                </div>
+                <div class="activity-box">
+                    <h3>🔍 문제 해결</h3>
+                    <p>복잡한 문제를 단계별로 분석하고 해결할 수 있어요!</p>
+                </div>
+                <div class="activity-box">
+                    <h3>💡 의미 이해</h3>
+                    <p>분수 곱셈이 왜 필요하고 언제 사용하는지 완벽히 이해해요!</p>
+                </div>
+                <div class="activity-box">
+                    <h3>🧠 논리적 사고</h3>
+                    <p>수학적 사고력을 기르고 논리적으로 설명할 수 있어요!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 3: 복습 - 분수 곱셈 -->
+        <div class="slide">
+            <h2>📚 복습: 분수 곱셈</h2>
+            <div class="side-by-side">
+                <div class="example-box">
+                    <h3>📖 분수 × 자연수</h3>
+                    <div style="font-size: 1.8rem; margin: 20px 0;">
+                        <div class="big-fraction">
+                            <span class="numerator">2</span>
+                            <span class="denominator">3</span>
+                        </div>
+                        × 4 = 
+                        <div class="big-fraction">
+                            <span class="numerator">8</span>
+                            <span class="denominator">3</span>
+                        </div>
+                    </div>
+                    <p>분자에 자연수를 곱해요!</p>
+                </div>
+                <div class="example-box">
+                    <h3>🎯 분수 × 분수</h3>
+                    <div style="font-size: 1.8rem; margin: 20px 0;">
+                        <div class="big-fraction">
+                            <span class="numerator">2</span>
+                            <span class="denominator">3</span>
+                        </div>
+                        × 
+                        <div class="big-fraction">
+                            <span class="numerator">3</span>
+                            <span class="denominator">4</span>
+                        </div>
+                        = 
+                        <div class="big-fraction">
+                            <span class="numerator">6</span>
+                            <span class="denominator">12</span>
+                        </div>
+                        = 
+                        <div class="big-fraction">
+                            <span class="numerator">1</span>
+                            <span class="denominator">2</span>
+                        </div>
+                    </div>
+                    <p>분자끼리, 분모끼리 곱해요!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 4: 실생활 문제 1 - 초콜릿 -->
+        <div class="slide">
+            <h2>🍫 실생활 문제 1: 초콜릿 나누기</h2>
+            <div class="word-problem">
+                <h3>📖 문제</h3>
+                <p>지민이는 초콜릿 한 판을 가지고 있어요. 전체 초콜릿의 <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>를 친구들과 나누어 먹기로 했어요. 지민이가 그 중에서 <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>를 먹는다면, 지민이는 전체 초콜릿의 몇 분의 몇을 먹게 될까요?</p>
+            </div>
+            <div class="solution-steps">
+                <h3>🔍 해결 과정</h3>
+                <div class="step">
+                    <strong>1단계:</strong> 문제 이해하기<br>
+                    • 전체 초콜릿: 1판<br>
+                    • 친구들과 나누어 먹을 양: <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>판<br>
+                    • 지민이가 그 중에서 먹는 비율: <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>
+                </div>
+                <div class="step">
+                    <strong>2단계:</strong> 계산식 세우기<br>
+                    지민이가 먹는 양 = <span class="fraction"><span class="num">3</span><span class="denom">4</span></span> × <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>
+                </div>
+                <div class="step">
+                    <strong>3단계:</strong> 계산하기<br>
+                    <span class="fraction"><span class="num">3</span><span class="denom">4</span></span> × <span class="fraction"><span class="num">2</span><span class="denom">3</span></span> = <span class="fraction"><span class="num">6</span><span class="denom">12</span></span> = <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>
+                </div>
+                <div class="step">
+                    <strong>답:</strong> 지민이는 전체 초콜릿의 <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>를 먹게 됩니다! 🍫
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 5: 애니메이션 시각적 설명 - 초콜릿 -->
+        <div class="slide">
+            <h2>👀 애니메이션으로 이해해보기</h2>
+            <div class="fraction-visual">
+                <h3>🍫 초콜릿 나누기 과정: <span class="fraction"><span class="num">3</span><span class="denom">4</span></span> × <span class="fraction"><span class="num">2</span><span class="denom">3</span></span> = <span class="fraction"><span class="num">1</span><span class="denom">2</span></span></h3>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <button id="startAnimation" onclick="startChocolateAnimation()" style="background: linear-gradient(135deg, #FF6B6B, #4ECDC4); color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 1.1em; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;">
+                        🎬 애니메이션 시작하기
+                    </button>
+                    <button id="resetAnimation" onclick="resetChocolateAnimation()" style="background: #95A5A6; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 1.1em; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-left: 10px; transition: all 0.3s ease;">
+                        🔄 다시보기
+                    </button>
+                </div>
+                
+                <!-- 애니메이션 컨테이너 -->
+                <div id="animationContainer" style="background: #f8f9fa; padding: 20px; border-radius: 15px; border: 3px solid #4ECDC4; min-height: 600px;">
+                    
+                    <!-- 제목과 설명 -->
+                    <div id="stepTitle" style="text-align: center; margin-bottom: 20px; font-size: 1.3em; font-weight: bold; color: #2c3e50; opacity: 0; transition: all 0.8s ease;">
+                        🍫 전체 초콜릿 1판
+                    </div>
+                    
+                    <!-- 메인 초콜릿 바 -->
+                    <div id="chocolateBar" style="max-width: 600px; margin: 30px auto; position: relative;">
+                        
+                        <!-- 단계 1: 전체 초콜릿 -->
+                        <div id="wholeChocolate" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; opacity: 0; transform: translateY(20px); transition: all 1s ease;">
+                            <div class="chocolate-piece" data-fraction="1/4" style="background: #8B4513; height: 80px; border: 3px solid #654321; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.1em; position: relative; transition: all 0.8s ease;">
+                                <span class="fraction"><span class="num">1</span><span class="denom">4</span></span>
+                                <div class="piece-glow" style="position: absolute; inset: -3px; border-radius: 10px; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent); opacity: 0; transition: opacity 0.5s ease;"></div>
+                            </div>
+                            <div class="chocolate-piece" data-fraction="1/4" style="background: #8B4513; height: 80px; border: 3px solid #654321; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.1em; position: relative; transition: all 0.8s ease;">
+                                <span class="fraction"><span class="num">1</span><span class="denom">4</span></span>
+                                <div class="piece-glow" style="position: absolute; inset: -3px; border-radius: 10px; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent); opacity: 0; transition: opacity 0.5s ease;"></div>
+                            </div>
+                            <div class="chocolate-piece" data-fraction="1/4" style="background: #8B4513; height: 80px; border: 3px solid #654321; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.1em; position: relative; transition: all 0.8s ease;">
+                                <span class="fraction"><span class="num">1</span><span class="denom">4</span></span>
+                                <div class="piece-glow" style="position: absolute; inset: -3px; border-radius: 10px; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent); opacity: 0; transition: opacity 0.5s ease;"></div>
+                            </div>
+                            <div class="chocolate-piece fridge-piece" style="background: #DDD; height: 80px; border: 3px solid #999; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #666; font-weight: bold; transition: all 0.8s ease;">
+                                냉장고<br>보관
+                            </div>
+                        </div>
+                        
+                        <!-- 단계 2: 친구들과 나눌 부분 강조 -->
+                        <div id="friendsPortion" style="margin-top: 30px; opacity: 0; transform: translateY(20px); transition: all 1s ease;">
+                            <div style="text-align: center; margin-bottom: 15px; padding: 10px; background: rgba(255,107,107,0.1); border-radius: 10px; border: 2px dashed #FF6B6B;">
+                                <span style="color: #E74C3C; font-weight: bold; font-size: 1.2em;">친구들과 나누어 먹을 부분: <span class="fraction"><span class="num">3</span><span class="denom">4</span></span></span>
+                            </div>
+                        </div>
+                        
+                        <!-- 단계 3: 3등분 과정 -->
+                        <div id="divisionProcess" style="margin-top: 40px; opacity: 0; transform: translateY(20px); transition: all 1s ease;">
+                            <div style="text-align: center; margin-bottom: 20px; font-size: 1.2em; color: #2c3e50; font-weight: bold;">
+                                <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>을 3명이 똑같이 나누어 먹어요!
+                            </div>
+                            
+                            <div id="divisionGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 450px; margin: 0 auto; opacity: 0; transition: all 1s ease;">
+                                <div class="person-share jiminy-1" style="background: #FF6B6B; height: 90px; border: 4px solid #E74C3C; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-direction: column; transform: scale(0.8); transition: all 0.8s ease; position: relative; overflow: hidden;">
+                                    <div style="font-size: 1.1em;">지민이</div>
+                                    <div style="font-size: 0.9em;"><span class="fraction"><span class="num">1</span><span class="denom">4</span></span></div>
+                                    <div class="eating-animation" style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 1.5s ease;"></div>
+                                </div>
+                                <div class="person-share jiminy-2" style="background: #FF6B6B; height: 90px; border: 4px solid #E74C3C; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-direction: column; transform: scale(0.8); transition: all 0.8s ease; position: relative; overflow: hidden;">
+                                    <div style="font-size: 1.1em;">지민이</div>
+                                    <div style="font-size: 0.9em;"><span class="fraction"><span class="num">1</span><span class="denom">4</span></span></div>
+                                    <div class="eating-animation" style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 1.5s ease;"></div>
+                                </div>
+                                <div class="person-share friends" style="background: #4ECDC4; height: 90px; border: 4px solid #26D0CE; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-direction: column; transform: scale(0.8); transition: all 0.8s ease; position: relative; overflow: hidden;">
+                                    <div style="font-size: 1.1em;">친구들</div>
+                                    <div style="font-size: 0.9em;"><span class="fraction"><span class="num">1</span><span class="denom">4</span></span></div>
+                                    <div class="eating-animation" style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 1.5s ease;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 단계 4: 최종 결과 -->
+                        <div id="finalResult" style="margin-top: 40px; opacity: 0; transform: translateY(20px); transition: all 1s ease;">
+                            <div style="text-align: center; margin-bottom: 20px; font-size: 1.3em; color: #2c3e50; font-weight: bold;">
+                                지민이는 <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>를 먹으므로...
+                            </div>
+                            
+                            <div id="finalChocolate" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 600px; margin: 0 auto;">
+                                <div class="final-piece jiminy-final-1" style="background: #FF6B6B; height: 100px; border: 5px solid #E74C3C; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-direction: column; position: relative; transform: scale(0.8); opacity: 0.7; transition: all 1s ease;">
+                                    <div style="font-size: 1.2em;">지민이</div>
+                                    <div style="font-size: 1em;"><span class="fraction"><span class="num">1</span><span class="denom">4</span></span></div>
+                                    <div class="number-badge" style="position: absolute; top: -12px; right: -12px; background: #FFD93D; color: #2c3e50; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 0.9em; font-weight: bold; transform: scale(0); transition: transform 0.8s ease;">1</div>
+                                </div>
+                                <div class="final-piece jiminy-final-2" style="background: #FF6B6B; height: 100px; border: 5px solid #E74C3C; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-direction: column; position: relative; transform: scale(0.8); opacity: 0.7; transition: all 1s ease;">
+                                    <div style="font-size: 1.2em;">지민이</div>
+                                    <div style="font-size: 1em;"><span class="fraction"><span class="num">1</span><span class="denom">4</span></span></div>
+                                    <div class="number-badge" style="position: absolute; top: -12px; right: -12px; background: #FFD93D; color: #2c3e50; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 0.9em; font-weight: bold; transform: scale(0); transition: transform 0.8s ease;">2</div>
+                                </div>
+                                <div class="final-piece friends-final" style="background: #4ECDC4; height: 100px; border: 5px solid #26D0CE; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-direction: column; transform: scale(0.8); opacity: 0.7; transition: all 1s ease;">
+                                    <div style="font-size: 1.2em;">친구들</div>
+                                    <div style="font-size: 1em;"><span class="fraction"><span class="num">1</span><span class="denom">4</span></span></div>
+                                </div>
+                                <div class="final-piece fridge-final" style="background: #DDD; height: 100px; border: 5px solid #999; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #666; font-weight: bold; transform: scale(0.8); opacity: 0.7; transition: all 1s ease;">
+                                    냉장고<br>보관
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 최종 답 -->
+                        <div id="finalAnswer" style="text-align: center; background: linear-gradient(135deg, #2ECC71, #27AE60); color: white; padding: 20px; border-radius: 15px; margin-top: 30px; opacity: 0; transform: scale(0.8); transition: all 1s ease; position: relative; overflow: hidden;">
+                            <div class="celebration-sparkle" style="position: absolute; top: 10px; left: 20px; font-size: 2em; opacity: 0; animation: sparkle 2s infinite;">✨</div>
+                            <div class="celebration-sparkle" style="position: absolute; top: 15px; right: 30px; font-size: 1.5em; opacity: 0; animation: sparkle 2s infinite 0.5s;">🎉</div>
+                            <div class="celebration-sparkle" style="position: absolute; bottom: 10px; left: 50px; font-size: 1.8em; opacity: 0; animation: sparkle 2s infinite 1s;">⭐</div>
+                            <div class="celebration-sparkle" style="position: absolute; bottom: 15px; right: 40px; font-size: 1.6em; opacity: 0; animation: sparkle 2s infinite 1.5s;">🎊</div>
+                            
+                            <h3 style="margin: 0; font-size: 1.6em; margin-bottom: 10px;">
+                                🎯 정답: 지민이는 전체의 
+                                <span class="fraction" style="color: #FFD93D; font-size: 1.3em;"><span class="num">1</span><span class="denom">2</span></span>
+                                를 먹게 돼요!
+                            </h3>
+                            <p style="margin: 0; font-size: 1.2em; margin-top: 10px;">
+                                <span class="fraction"><span class="num">1</span><span class="denom">4</span></span> + <span class="fraction"><span class="num">1</span><span class="denom">4</span></span> = <span class="fraction"><span class="num">2</span><span class="denom">4</span></span> = <span class="fraction" style="color: #FFD93D;"><span class="num">1</span><span class="denom">2</span></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <style>
+                @keyframes sparkle {
+                    0%, 100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+                    50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+                }
+                
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                }
+                
+                @keyframes glow {
+                    0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+                    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.4); }
+                }
+                
+                .chocolate-piece:hover .piece-glow {
+                    opacity: 1;
+                }
+                
+                .person-share:hover {
+                    transform: scale(0.85);
+                }
+                
+                .final-piece.active {
+                    animation: glow 2s ease-in-out infinite;
+                }
+                </style>
+            </div>
+        </div>
+
+        <!-- 슬라이드 6: 실생활 문제 2 - 케이크 -->
+        <div class="slide">
+            <h2>🎂 실생활 문제 2: 생일 케이크</h2>
+            <div class="word-problem">
+                <h3>📖 문제</h3>
+                <p>수진이네 가족은 생일 케이크를 주문했어요. 케이크의 <span class="fraction"><span class="num">5</span><span class="denom">6</span></span>를 가족들이 먹고, 나머지는 냉장고에 보관하기로 했어요. 가족들이 먹을 케이크 중에서 수진이가 <span class="fraction"><span class="num">3</span><span class="denom">5</span></span>를 먹는다면, 수진이는 전체 케이크의 몇 분의 몇을 먹게 될까요?</p>
+            </div>
+            <div class="quiz-container">
+                <h3>🤔 여러분이 직접 풀어보세요!</h3>
+                <p style="font-size: 1.2rem; margin: 15px 0;">계산식: <span class="fraction"><span class="num">5</span><span class="denom">6</span></span> × <span class="fraction"><span class="num">3</span><span class="denom">5</span></span> = ?</p>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">
+                        <span class="fraction"><span class="num">8</span><span class="denom">11</span></span>
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">
+                        <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">
+                        <span class="fraction"><span class="num">15</span><span class="denom">30</span></span>
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">
+                        <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 7: 케이크 문제 해설 -->
+        <div class="slide">
+            <h2>📝 케이크 문제 해설</h2>
+            <div class="solution-steps">
+                <h3>🎂 단계별 해결 과정</h3>
+                <div class="step">
+                    <strong>1단계:</strong> 주어진 정보 정리<br>
+                    • 가족들이 먹을 케이크: 전체의 <span class="fraction"><span class="num">5</span><span class="denom">6</span></span><br>
+                    • 수진이가 먹을 비율: 가족들이 먹을 케이크의 <span class="fraction"><span class="num">3</span><span class="denom">5</span></span>
+                </div>
+                <div class="step">
+                    <strong>2단계:</strong> 식 세우기<br>
+                    수진이가 먹는 양 = <span class="fraction"><span class="num">5</span><span class="denom">6</span></span> × <span class="fraction"><span class="num">3</span><span class="denom">5</span></span>
+                </div>
+                <div class="step">
+                    <strong>3단계:</strong> 계산하기<br>
+                    <span class="fraction"><span class="num">5</span><span class="denom">6</span></span> × <span class="fraction"><span class="num">3</span><span class="denom">5</span></span> = <span class="fraction"><span class="num">15</span><span class="denom">30</span></span> = <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>
+                </div>
+                <div class="step" style="background: #2ECC71; color: white;">
+                    <strong>정답:</strong> 수진이는 전체 케이크의 <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>를 먹게 됩니다! 🎉
+                </div>
+            </div>
+            <div class="activity-box">
+                <h3>💡 핵심 포인트</h3>
+                <p>5와 5가 약분되어 <span class="fraction"><span class="num">15</span><span class="denom">30</span></span> = <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>가 되었어요!</p>
+            </div>
+        </div>
+
+        <!-- 슬라이드 8: 복잡한 문제 - 독서 -->
+        <div class="slide">
+            <h2>📚 도전 문제: 독서 계획</h2>
+            <div class="word-problem">
+                <h3>📖 문제</h3>
+                <p>민수는 두꺼운 책을 읽고 있어요. 첫째 날에 전체 책의 <span class="fraction"><span class="num">1</span><span class="denom">4</span></span>을 읽었고, 둘째 날에는 남은 책의 <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>을 읽었어요. 민수가 이틀 동안 읽은 책은 전체의 몇 분의 몇일까요?</p>
+            </div>
+            <div class="solution-steps">
+                <h3>🔍 단계별 해결</h3>
+                <div class="step">
+                    <strong>1단계:</strong> 첫째 날 후 남은 책 계산<br>
+                    남은 책 = 1 - <span class="fraction"><span class="num">1</span><span class="denom">4</span></span> = <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>
+                </div>
+                <div class="step">
+                    <strong>2단계:</strong> 둘째 날 읽은 책 계산<br>
+                    둘째 날 = <span class="fraction"><span class="num">3</span><span class="denom">4</span></span> × <span class="fraction"><span class="num">2</span><span class="denom">3</span></span> = <span class="fraction"><span class="num">6</span><span class="denom">12</span></span> = <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>
+                </div>
+                <div class="step">
+                    <strong>3단계:</strong> 이틀 동안 읽은 전체 계산<br>
+                    전체 = <span class="fraction"><span class="num">1</span><span class="denom">4</span></span> + <span class="fraction"><span class="num">1</span><span class="denom">2</span></span> = <span class="fraction"><span class="num">1</span><span class="denom">4</span></span> + <span class="fraction"><span class="num">2</span><span class="denom">4</span></span> = <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>
+                </div>
+                <div class="step" style="background: #3498DB; color: white;">
+                    <strong>답:</strong> 민수는 이틀 동안 전체 책의 <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>을 읽었어요! 📖
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 9: 문제 해결 전략 -->
+        <div class="slide">
+            <h2>🧠 문제 해결 전략</h2>
+            <div class="compact-grid">
+                <div class="activity-box">
+                    <h3>1️⃣ 문제 이해</h3>
+                    <p>• 주어진 정보 정리하기</p>
+                    <p>• 구하려는 것 파악하기</p>
+                    <p>• 핵심 단어 찾기</p>
+                </div>
+                <div class="activity-box">
+                    <h3>2️⃣ 계획 세우기</h3>
+                    <p>• 어떤 계산이 필요한지 생각</p>
+                    <p>• 단계별로 나누어 생각</p>
+                    <p>• 식 세우기</p>
+                </div>
+                <div class="activity-box">
+                    <h3>3️⃣ 계산하기</h3>
+                    <p>• 분수 곱셈 규칙 적용</p>
+                    <p>• 약분하기</p>
+                    <p>• 계산 검토하기</p>
+                </div>
+                <div class="activity-box">
+                    <h3>4️⃣ 확인하기</h3>
+                    <p>• 답이 합리적인지 확인</p>
+                    <p>• 문제에서 구한 것이 맞는지 확인</p>
+                    <p>• 다른 방법으로도 확인</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 10: 연습 문제 1 -->
+        <div class="slide">
+            <h2>✏️ 연습 문제 1</h2>
+            <div class="problem-grid">
+                <div class="problem-card" onclick="showSolution(this, '2/3 × 3/4 = 6/12 = 1/2')">
+                    <h3>🍎 사과 문제</h3>
+                    <p>전체 사과의 <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>를 친구들과 나누어 먹고, 그 중 <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>를 내가 먹었다면?</p>
+                    <div class="big-number">?</div>
+                </div>
+                <div class="problem-card" onclick="showSolution(this, '4/5 × 1/2 = 4/10 = 2/5')">
+                    <h3>🍰 케이크 문제</h3>
+                    <p>케이크의 <span class="fraction"><span class="num">4</span><span class="denom">5</span></span>를 파티에서 먹고, 내가 그 중 <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>을 먹었다면?</p>
+                    <div class="big-number">?</div>
+                </div>
+                <div class="problem-card" onclick="showSolution(this, '3/4 × 2/5 = 6/20 = 3/10')">
+                    <h3>🍫 초콜릿 문제</h3>
+                    <p>초콜릿의 <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>를 나누어 먹고, 내가 그 중 <span class="fraction"><span class="num">2</span><span class="denom">5</span></span>를 먹었다면?</p>
+                    <div class="big-number">?</div>
+                </div>
+            </div>
+            <div class="activity-box">
+                <h3>💡 풀이 방법</h3>
+                <p>각 카드를 클릭해서 정답을 확인해보세요!</p>
+            </div>
+        </div>
+
+        <!-- 슬라이드 11: 연습 문제 2 -->
+        <div class="slide">
+            <h2>✏️ 연습 문제 2 - 복합 문제</h2>
+            <div class="word-problem">
+                <h3>🎮 게임 문제</h3>
+                <p>지은이는 게임을 하면서 전체 점수의 <span class="fraction"><span class="num">3</span><span class="denom">5</span></span>를 1라운드에서 얻었어요. 2라운드에서는 남은 점수의 <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>을 더 얻었어요. 지은이가 2라운드까지 얻은 점수는 전체의 몇 분의 몇일까요?</p>
+            </div>
+            <div class="quiz-container">
+                <h3>🎯 정답을 골라보세요!</h3>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkComplexAnswer(this, false)">
+                        <span class="fraction"><span class="num">4</span><span class="denom">7</span></span>
+                    </div>
+                    <div class="quiz-option" onclick="checkComplexAnswer(this, false)">
+                        <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>
+                    </div>
+                    <div class="quiz-option" onclick="checkComplexAnswer(this, true)">
+                        <span class="fraction"><span class="num">4</span><span class="denom">5</span></span>
+                    </div>
+                    <div class="quiz-option" onclick="checkComplexAnswer(this, false)">
+                        <span class="fraction"><span class="num">7</span><span class="denom">10</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 12: 복합 문제 해설 -->
+        <div class="slide">
+            <h2>🎮 게임 문제 해설</h2>
+            <div class="solution-steps">
+                <h3>🔍 단계별 해결 과정</h3>
+                <div class="step">
+                    <strong>1단계:</strong> 1라운드 후 상황<br>
+                    • 1라운드에서 얻은 점수: 전체의 <span class="fraction"><span class="num">3</span><span class="denom">5</span></span><br>
+                    • 남은 점수: 1 - <span class="fraction"><span class="num">3</span><span class="denom">5</span></span> = <span class="fraction"><span class="num">2</span><span class="denom">5</span></span>
+                </div>
+                <div class="step">
+                    <strong>2단계:</strong> 2라운드에서 얻은 점수<br>
+                    남은 점수의 <span class="fraction"><span class="num">1</span><span class="denom">2</span></span> = <span class="fraction"><span class="num">2</span><span class="denom">5</span></span> × <span class="fraction"><span class="num">1</span><span class="denom">2</span></span> = <span class="fraction"><span class="num">1</span><span class="denom">5</span></span>
+                </div>
+                <div class="step">
+                    <strong>3단계:</strong> 전체 점수 계산<br>
+                    전체 점수 = <span class="fraction"><span class="num">3</span><span class="denom">5</span></span> + <span class="fraction"><span class="num">1</span><span class="denom">5</span></span> = <span class="fraction"><span class="num">4</span><span class="denom">5</span></span>
+                </div>
+                <div class="step" style="background: #9B59B6; color: white;">
+                    <strong>정답:</strong> 지은이는 2라운드까지 전체 점수의 <span class="fraction"><span class="num">4</span><span class="denom">5</span></span>를 얻었어요! 🎮
+                </div>
+            </div>
+            <div class="activity-box">
+                <h3>🏆 잘했어요!</h3>
+                <p>복잡한 문제도 단계별로 차근차근 해결하면 쉬워져요!</p>
+            </div>
+        </div>
+
+        <!-- 슬라이드 13: 분수 곱셈 매칭 게임 -->
+        <div class="slide">
+            <h2>🎲 분수 곱셈 매칭 게임</h2>
+            <div class="game-board">
+                <h3>🎯 계산식과 답을 매칭해보세요!</h3>
+                <p style="margin-bottom: 20px;">계산식을 클릭한 후, 맞는 답을 클릭하세요!</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h4>계산식</h4>
+                        <div class="game-item" onclick="selectProblem(this, 'A')" data-answer="1">
+                            <span class="fraction"><span class="num">1</span><span class="denom">2</span></span> × <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>
+                        </div>
+                        <div class="game-item" onclick="selectProblem(this, 'B')" data-answer="2">
+                            <span class="fraction"><span class="num">3</span><span class="denom">4</span></span> × <span class="fraction"><span class="num">4</span><span class="denom">5</span></span>
+                        </div>
+                        <div class="game-item" onclick="selectProblem(this, 'C')" data-answer="3">
+                            <span class="fraction"><span class="num">2</span><span class="denom">5</span></span> × <span class="fraction"><span class="num">5</span><span class="denom">6</span></span>
+                        </div>
+                        <div class="game-item" onclick="selectProblem(this, 'D')" data-answer="4">
+                            <span class="fraction"><span class="num">5</span><span class="denom">6</span></span> × <span class="fraction"><span class="num">3</span><span class="denom">5</span></span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>정답</h4>
+                        <div class="game-item" onclick="selectAnswer(this, '1')" data-problem="A">
+                            <span class="fraction"><span class="num">1</span><span class="denom">3</span></span>
+                        </div>
+                        <div class="game-item" onclick="selectAnswer(this, '2')" data-problem="B">
+                            <span class="fraction"><span class="num">3</span><span class="denom">5</span></span>
+                        </div>
+                        <div class="game-item" onclick="selectAnswer(this, '3')" data-problem="C">
+                            <span class="fraction"><span class="num">1</span><span class="denom">3</span></span>
+                        </div>
+                        <div class="game-item" onclick="selectAnswer(this, '4')" data-problem="D">
+                            <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 14: 창의적 문제 -->
+        <div class="slide">
+            <h2>🌟 창의적 문제</h2>
+            <div class="word-problem">
+                <h3>🎨 미술 시간 문제</h3>
+                <p>미술 시간에 색칠하기를 해요. 전체 그림의 <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>을 빨간색으로, 남은 부분의 <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>을 파란색으로 칠했어요. 그러면 칠하지 않은 부분은 전체의 몇 분의 몇일까요?</p>
+            </div>
+            <div class="side-by-side">
+                <div class="solution-steps">
+                    <h3>💡 해결 과정을 생각해보세요!</h3>
+                    <div class="step">
+                        <strong>힌트 1:</strong> 빨간색을 칠한 후 남은 부분을 먼저 구해보세요
+                    </div>
+                    <div class="step">
+                        <strong>힌트 2:</strong> 파란색으로 칠한 부분을 전체 기준으로 계산해보세요
+                    </div>
+                    <div class="step">
+                        <strong>힌트 3:</strong> 전체에서 칠한 부분들을 빼면 답이 나와요!
+                    </div>
+                </div>
+                <div class="activity-box">
+                    <h3>🎯 도전해보세요!</h3>
+                    <p>단계별로 천천히 풀어보세요.</p>
+                    <br>
+                    <button class="quiz-option" onclick="revealCreativeAnswer()" style="background: #3498DB; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer;">
+                        정답 확인하기
+                    </button>
+                    <div id="creative-answer" style="display: none; margin-top: 15px; background: #2ECC71; color: white; padding: 15px; border-radius: 10px;">
+                        <strong>정답:</strong> 칠하지 않은 부분은 전체의 <span class="fraction"><span class="num">1</span><span class="denom">12</span></span>입니다!<br>
+                        <small>풀이: 남은 부분 1/3 × 3/4 = 3/12 = 1/4 (파란색), 칠하지 않은 부분 = 1 - 2/3 - 1/4 = 1/12</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 15: 실력 점검 -->
+        <div class="slide">
+            <h2>📊 실력 점검</h2>
+            <div class="compact-grid">
+                <div class="problem-card" onclick="checkSkillAnswer(this, '6/35')">
+                    <h3>문제 1</h3>
+                    <p><span class="fraction"><span class="num">2</span><span class="denom">5</span></span> × <span class="fraction"><span class="num">3</span><span class="denom">7</span></span> = ?</p>
+                    <div class="big-number">?</div>
+                </div>
+                <div class="problem-card" onclick="checkSkillAnswer(this, '3/8')">
+                    <h3>문제 2</h3>
+                    <p><span class="fraction"><span class="num">1</span><span class="denom">2</span></span> × <span class="fraction"><span class="num">3</span><span class="denom">4</span></span> = ?</p>
+                    <div class="big-number">?</div>
+                </div>
+                <div class="problem-card" onclick="checkSkillAnswer(this, '4/15')">
+                    <h3>문제 3</h3>
+                    <p><span class="fraction"><span class="num">2</span><span class="denom">3</span></span> × <span class="fraction"><span class="num">2</span><span class="denom">5</span></span> = ?</p>
+                    <div class="big-number">?</div>
+                </div>
+                <div class="problem-card" onclick="checkSkillAnswer(this, '1/4')">
+                    <h3>문제 4</h3>
+                    <p><span class="fraction"><span class="num">3</span><span class="denom">5</span></span> × <span class="fraction"><span class="num">5</span><span class="denom">12</span></span> = ?</p>
+                    <div class="big-number">?</div>
+                </div>
+            </div>
+            <div class="activity-box">
+                <h3>📈 점수 현황</h3>
+                <div id="score-display" style="font-size: 1.5rem; color: #2C3E50;">
+                    정답 개수: <span id="score">0</span> / 4 
+                    <span id="score-message">문제를 풀어보세요!</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 16: 오늘 배운 것 -->
+        <div class="slide">
+            <h2>📚 오늘 배운 것</h2>
+            <div class="compact-grid">
+                <div class="learning-objective">
+                    <h3>✅ 실생활 활용</h3>
+                    <p>초콜릿, 케이크, 게임 점수 등 다양한 상황에서 분수 곱셈을 활용했어요!</p>
+                </div>
+                <div class="learning-objective">
+                    <h3>✅ 문제 해결 전략</h3>
+                    <p>복잡한 문제도 단계별로 나누어서 차근차근 해결할 수 있어요!</p>
+                </div>
+                <div class="learning-objective">
+                    <h3>✅ 계산 능력</h3>
+                    <p>분수×분수 곱셈을 정확하고 빠르게 계산할 수 있어요!</p>
+                </div>
+                <div class="learning-objective">
+                    <h3>✅ 수학적 사고</h3>
+                    <p>문제 상황을 수식으로 표현하고 논리적으로 해결할 수 있어요!</p>
+                </div>
+            </div>
+            <div class="activity-box" style="margin-top: 30px;">
+                <h3>🎯 핵심 포인트</h3>
+                <p><strong>"전체의 일부"에서 "그 일부의 일부"를 구할 때는 분수 곱셈을 사용해요!</strong></p>
+                <p>실생활에서 분수 곱셈이 얼마나 유용한지 알았죠? 👍</p>
+            </div>
+        </div>
+
+        <!-- 슬라이드 17: 다음 시간 예고 -->
+        <div class="slide">
+            <h2>🔮 다음 시간 예고</h2>
+            <div class="horizontal-layout">
+                <div class="left-column">
+                    <div class="activity-box">
+                        <h3>🎯 다음 주 학습 내용</h3>
+                        <p>📐 <strong>분수의 나눗셈</strong></p>
+                        <br>
+                        <p>✨ 배울 내용:</p>
+                        <p>• 자연수 ÷ 분수</p>
+                        <p>• 분수 ÷ 자연수</p>
+                        <p>• 분수 ÷ 분수</p>
+                        <p>• 분수 나눗셈의 실생활 활용</p>
+                    </div>
+                    <div class="example-box">
+                        <h3>🤔 미리 생각해보기</h3>
+                        <p>2 ÷ <span class="fraction"><span class="num">1</span><span class="denom">3</span></span> = ? </p>
+                        <p>🍕 피자 2판을 <span class="fraction"><span class="num">1</span><span class="denom">3</span></span>판씩 나누어 준다면 몇 명에게 줄 수 있을까요?</p>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <div style="font-size: 6rem;">➕➖✖️➗</div>
+                    <h3 style="margin-top: 20px;">분수의 사칙연산 마스터!</h3>
+                    <p style="font-size: 1.2rem; margin-top: 15px;">곧 분수의 모든 계산을 완벽하게 할 수 있어요!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 18: 마무리 -->
+        <div class="slide">
+            <h2>🎉 수고했어요!</h2>
+            <div class="horizontal-layout">
+                <div class="left-column">
+                    <div class="celebration" style="font-size: 4rem; margin-bottom: 30px;">
+                        🎊✨🌟🎈🎁
+                    </div>
+                    <div class="activity-box">
+                        <h3>🏆 오늘의 성취</h3>
+                        <p>✅ 분수 곱셈의 실생활 활용 완전 정복!</p>
+                        <p>✅ 복잡한 문제도 단계별로 해결!</p>
+                        <p>✅ 수학적 사고력 크게 향상!</p>
+                        <p>✅ 문제 해결 전략 완벽 습득!</p>
+                    </div>
+                    <div class="learning-objective">
+                        <h3>💬 마무리 한마디</h3>
+                        <p><strong>"수학은 우리 생활 곳곳에 숨어있어요! 분수 곱셈으로 다양한 문제를 해결할 수 있다는 걸 배웠죠? 여러분의 수학 실력이 한 단계 더 성장했어요!"</strong></p>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <div style="font-size: 8rem;">🎓</div>
+                    <h3 style="margin-top: 20px;">분수 곱셈 마스터!</h3>
+                    <p style="font-size: 1.3rem; margin-top: 15px;">다음 주에 분수 나눗셈으로 더 재미있게 만나요!</p>
+                    <br>
+                    <p style="font-size: 1.1rem;">🌈 즐거운 수학 공부 되세요! 🌈</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 네비게이션 바 -->
+        <div class="navigation-bar">
+            <button class="nav-btn" onclick="previousSlide()">이전</button>
+            <span class="slide-counter">
+                <span id="current-slide">1</span> / <span id="total-slides">18</span>
+            </span>
+            <button class="nav-btn" onclick="nextSlide()">다음</button>
+            <button class="nav-btn" onclick="goToSlide(1)">처음으로</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 18;
+        let selectedProblem = null;
+        let gameMatches = 0;
+        let skillScore = 0;
+
+        function showSlide(slideNumber) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            const targetSlide = slides[slideNumber - 1];
+            if (targetSlide) {
+                targetSlide.classList.add('active');
+                currentSlide = slideNumber;
+                document.getElementById('current-slide').textContent = currentSlide;
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function goToSlide(slideNumber) {
+            if (slideNumber >= 1 && slideNumber <= totalSlides) {
+                showSlide(slideNumber);
+            }
+        }
+
+        // 퀴즈 답 확인
+        function checkAnswer(element, isCorrect) {
+            const options = element.parentNode.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                if (option === element) {
+                    option.classList.add(isCorrect ? 'correct' : 'wrong');
+                }
+            });
+            
+            if (isCorrect) {
+                setTimeout(() => {
+                    alert('🎉 정답입니다! 훌륭해요!');
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    alert('🤔 다시 한번 계산해보세요!');
+                }, 500);
+            }
+        }
+
+        function checkComplexAnswer(element, isCorrect) {
+            checkAnswer(element, isCorrect);
+        }
+
+        // 해답 보기
+        function showSolution(element, solution) {
+            const questionMark = element.querySelector('.big-number');
+            questionMark.textContent = solution;
+            questionMark.style.color = '#2ECC71';
+            element.style.background = 'linear-gradient(135deg, #2ECC71, #27AE60)';
+            element.style.color = 'white';
+            element.style.pointerEvents = 'none';
+        }
+
+        // 매칭 게임
+        function selectProblem(element, problemId) {
+            // 이전 선택 해제
+            document.querySelectorAll('.game-item').forEach(item => {
+                item.style.background = 'white';
+                item.style.color = '#2c3e50';
+            });
+            
+            element.style.background = '#3498DB';
+            element.style.color = 'white';
+            selectedProblem = {element: element, id: problemId, answer: element.getAttribute('data-answer')};
+        }
+
+        function selectAnswer(element, answerId) {
+            if (!selectedProblem) {
+                alert('먼저 계산식을 선택해주세요!');
+                return;
+            }
+            
+            if (selectedProblem.answer === answerId) {
+                element.classList.add('matched');
+                selectedProblem.element.classList.add('matched');
+                gameMatches++;
+                
+                if (gameMatches === 4) {
+                    setTimeout(() => {
+                        alert('🎉 모든 문제를 맞추셨어요! 대단해요!');
+                    }, 500);
+                }
+            } else {
+                alert('🤔 다시 한번 계산해보세요!');
+            }
+            selectedProblem = null;
+        }
+
+        // 창의적 문제 답 공개
+        function revealCreativeAnswer() {
+            document.getElementById('creative-answer').style.display = 'block';
+        }
+
+        // 실력 점검
+        function checkSkillAnswer(element, correctAnswer) {
+            const userAnswer = prompt('답을 입력하세요 (예: 1/2):');
+            if (userAnswer === correctAnswer) {
+                element.style.background = 'linear-gradient(135deg, #2ECC71, #27AE60)';
+                element.style.color = 'white';
+                element.querySelector('.big-number').textContent = '✓';
+                skillScore++;
+            } else {
+                element.style.background = 'linear-gradient(135deg, #E74C3C, #C0392B)';
+                element.style.color = 'white';
+                element.querySelector('.big-number').textContent = correctAnswer;
+            }
+            
+            element.style.pointerEvents = 'none';
+            updateScore();
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = skillScore;
+            const message = document.getElementById('score-message');
+            
+            if (skillScore === 4) {
+                message.textContent = '🎉 완벽해요!';
+                message.style.color = '#2ECC71';
+            } else if (skillScore >= 2) {
+                message.textContent = '👍 잘했어요!';
+                message.style.color = '#3498DB';
+            } else {
+                message.textContent = '💪 조금 더 연습해요!';
+                message.style.color = '#FF6B6B';
+            }
+        }
+
+        // 초콜릿 애니메이션 함수들
+        function startChocolateAnimation() {
+            const container = document.getElementById('animationContainer');
+            const startBtn = document.getElementById('startAnimation');
+            const resetBtn = document.getElementById('resetAnimation');
+            
+            // 버튼 상태 변경
+            startBtn.disabled = true;
+            startBtn.style.opacity = '0.6';
+            resetBtn.disabled = false;
+            resetBtn.style.opacity = '1';
+            
+            container.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h3 style="margin-bottom: 30px;">🧮 Area Model로 알아보는 <span class="big-fraction"><span class="num">3</span><span class="denom">4</span></span> × <span class="big-fraction"><span class="num">2</span><span class="denom">3</span></span></h3>
+                    
+                    <div id="step1" class="animation-step" style="opacity: 0; transform: translateY(20px); transition: all 1.5s ease;">
+                        <h4>1️⃣ 전체를 4×3 격자로 나누기</h4>
+                        <div class="grid-container" style="display: flex; justify-content: center; gap: 40px; align-items: center; margin: 20px 0;">
+                            <div class="area-model" style="display: grid; grid-template-columns: repeat(4, 60px); grid-template-rows: repeat(3, 60px); gap: 2px; border: 3px solid #2C3E50; padding: 10px; background: #ECF0F1; border-radius: 10px;">
+                                <div class="grid-cell" data-col="1" data-row="1" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="2" data-row="1" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="3" data-row="1" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="4" data-row="1" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="1" data-row="2" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="2" data-row="2" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="3" data-row="2" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="4" data-row="2" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="1" data-row="3" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="2" data-row="3" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="3" data-row="3" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                                <div class="grid-cell" data-col="4" data-row="3" style="background: white; border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2C3E50; transition: all 0.8s ease;"></div>
+                            </div>
+                            <div style="text-align: left;">
+                                <div style="font-size: 1.1em; margin: 10px 0;">
+                                    📐 <strong>4개의 세로줄</strong><br>
+                                    <span style="color: #E74C3C; font-weight: bold;">분모 4</span>를 나타내요
+                                </div>
+                                <div style="font-size: 1.1em; margin: 10px 0;">
+                                    📐 <strong>3개의 가로줄</strong><br>
+                                    <span style="color: #8E44AD; font-weight: bold;">분모 3</span>을 나타내요
+                                </div>
+                                <div style="font-size: 1.1em; margin: 10px 0;">
+                                    🔢 <strong>전체 12칸</strong><br>
+                                    4 × 3 = 12 단위
+                                </div>
+                            </div>
+                        </div>
+                        <p style="font-size: 1.1em;">🧮 Area Model 격자를 만들었어요!</p>
+                    </div>
+
+                    <div id="step2" class="animation-step" style="opacity: 0; transform: translateY(20px); transition: all 1.5s ease; margin-top: 40px;">
+                        <h4>2️⃣ <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>를 빨간색으로 칠하기 (세로로 3칸)</h4>
+                        <div class="grid-container" style="display: flex; justify-content: center; gap: 40px; align-items: center; margin: 20px 0;">
+                            <div class="area-model-step2" style="display: grid; grid-template-columns: repeat(4, 60px); grid-template-rows: repeat(3, 60px); gap: 2px; border: 3px solid #2C3E50; padding: 10px; background: #ECF0F1; border-radius: 10px;">
+                                <div class="grid-cell red-fill" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell red-fill" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell red-fill" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell" style="background: rgba(189, 195, 199, 0.5); border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #7F8C8D;"></div>
+                                <div class="grid-cell red-fill" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell red-fill" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell red-fill" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell" style="background: rgba(189, 195, 199, 0.5); border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #7F8C8D;"></div>
+                                <div class="grid-cell red-fill" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell red-fill" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell red-fill" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell" style="background: rgba(189, 195, 199, 0.5); border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #7F8C8D;"></div>
+                            </div>
+                            <div style="text-align: left;">
+                                <div style="font-size: 1.1em; margin: 10px 0;">
+                                    🔴 <strong>빨간 영역</strong><br>
+                                    세로로 3칸 = <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>
+                                </div>
+                                <div style="font-size: 1.1em; margin: 10px 0;">
+                                    📊 <strong>9칸이 빨강</strong><br>
+                                    (3칸 × 3줄 = 9칸)
+                                </div>
+                                <div style="font-size: 1.1em; margin: 10px 0;">
+                                    ⚪ <strong>3칸은 회색</strong><br>
+                                    (1칸 × 3줄 = 3칸)
+                                </div>
+                            </div>
+                        </div>
+                        <p style="font-size: 1.1em;">🔴 첫 번째 분수 <span class="fraction"><span class="num">3</span><span class="denom">4</span></span>를 표시했어요!</p>
+                    </div>
+
+                    <div id="step3" class="animation-step" style="opacity: 0; transform: translateY(20px); transition: all 1.5s ease; margin-top: 40px;">
+                        <h4>3️⃣ <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>를 파란색으로 칠하기 (가로로 2줄)</h4>
+                        <div class="grid-container" style="display: flex; justify-content: center; gap: 40px; align-items: center; margin: 20px 0;">
+                            <div class="area-model-step3" style="display: grid; grid-template-columns: repeat(4, 60px); grid-template-rows: repeat(3, 60px); gap: 2px; border: 3px solid #2C3E50; padding: 10px; background: #ECF0F1; border-radius: 10px;">
+                                <div class="grid-cell both-fill" style="background: linear-gradient(45deg, rgba(231, 76, 60, 0.7) 50%, rgba(52, 152, 219, 0.7) 50%); border: 3px solid #8E44AD; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 15px rgba(142, 68, 173, 0.8); transform: scale(1.05);">🎯</div>
+                                <div class="grid-cell both-fill" style="background: linear-gradient(45deg, rgba(231, 76, 60, 0.7) 50%, rgba(52, 152, 219, 0.7) 50%); border: 3px solid #8E44AD; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 15px rgba(142, 68, 173, 0.8); transform: scale(1.05);">🎯</div>
+                                <div class="grid-cell both-fill" style="background: linear-gradient(45deg, rgba(231, 76, 60, 0.7) 50%, rgba(52, 152, 219, 0.7) 50%); border: 3px solid #8E44AD; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 15px rgba(142, 68, 173, 0.8); transform: scale(1.05);">🎯</div>
+                                <div class="grid-cell blue-only" style="background: rgba(52, 152, 219, 0.8); border: 2px solid #2980B9; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);"></div>
+                                <div class="grid-cell both-fill" style="background: linear-gradient(45deg, rgba(231, 76, 60, 0.7) 50%, rgba(52, 152, 219, 0.7) 50%); border: 3px solid #8E44AD; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 15px rgba(142, 68, 173, 0.8); transform: scale(1.05);">🎯</div>
+                                <div class="grid-cell both-fill" style="background: linear-gradient(45deg, rgba(231, 76, 60, 0.7) 50%, rgba(52, 152, 219, 0.7) 50%); border: 3px solid #8E44AD; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 15px rgba(142, 68, 173, 0.8); transform: scale(1.05);">🎯</div>
+                                <div class="grid-cell both-fill" style="background: linear-gradient(45deg, rgba(231, 76, 60, 0.7) 50%, rgba(52, 152, 219, 0.7) 50%); border: 3px solid #8E44AD; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 15px rgba(142, 68, 173, 0.8); transform: scale(1.05);">🎯</div>
+                                <div class="grid-cell blue-only" style="background: rgba(52, 152, 219, 0.8); border: 2px solid #2980B9; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);"></div>
+                                <div class="grid-cell red-only" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell red-only" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell red-only" style="background: rgba(231, 76, 60, 0.8); border: 2px solid #C0392B; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                <div class="grid-cell gray" style="background: rgba(189, 195, 199, 0.5); border: 2px solid #BDC3C7; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #7F8C8D;"></div>
+                            </div>
+                            <div style="text-align: left;">
+                                <div style="font-size: 1.1em; margin: 10px 0;">
+                                    🔵 <strong>파란 영역</strong><br>
+                                    가로로 2줄 = <span class="fraction"><span class="num">2</span><span class="denom">3</span></span>
+                                </div>
+                                <div style="font-size: 1.1em; margin: 10px 0;">
+                                    🎯 <strong>보라색 영역</strong><br>
+                                    빨강과 파랑이 겹친 부분!
+                                </div>
+                                <div style="font-size: 1.1em; margin: 10px 0;">
+                                    📊 <strong>6칸이 겹침</strong><br>
+                                    이것이 우리가 찾는 답!
+                                </div>
+                            </div>
+                        </div>
+                        <p style="font-size: 1.1em;">🎯 두 분수가 겹치는 부분을 찾았어요!</p>
+                    </div>
+
+                    <div id="step4" class="animation-step" style="opacity: 0; transform: translateY(20px); transition: all 1.5s ease; margin-top: 40px;">
+                        <h4>4️⃣ 최종 답 계산하기</h4>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin: 20px 0;">
+                            <div style="text-align: center;">
+                                <p style="font-size: 1.2em; margin-bottom: 10px; color: #8E44AD;">겹친 영역</p>
+                                <div style="display: flex; gap: 5px; justify-content: center;">
+                                    <div class="highlight-box" style="width: 60px; height: 60px; background: linear-gradient(45deg, rgba(231, 76, 60, 0.7) 50%, rgba(52, 152, 219, 0.7) 50%); border-radius: 10px; border: 3px solid #8E44AD; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; animation: sparkle 1.5s infinite alternate; box-shadow: 0 0 20px rgba(142, 68, 173, 0.8);">6칸</div>
+                                </div>
+                            </div>
+                            <div style="font-size: 2em; color: #E74C3C;">÷</div>
+                            <div style="text-align: center;">
+                                <p style="font-size: 1.2em; margin-bottom: 10px; color: #2C3E50;">전체 격자</p>
+                                <div class="total-grid" style="display: grid; grid-template-columns: repeat(3, 20px); grid-template-rows: repeat(4, 15px); gap: 1px; border: 2px solid #2C3E50; padding: 5px; border-radius: 8px; background: #ECF0F1;">
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                    <div style="background: #34495E; border-radius: 2px;"></div>
+                                </div>
+                                <p style="font-size: 0.9em; margin-top: 5px; color: #2C3E50;">12칸</p>
+                            </div>
+                            <div style="font-size: 2em; color: #E74C3C;">=</div>
+                            <div style="text-align: center;">
+                                <div class="result-fraction" style="font-size: 3em; color: #27AE60; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+                                    <span class="fraction">
+                                        <span class="num" style="border-bottom: 3px solid #27AE60;">6</span>
+                                        <span class="denom">12</span>
+                                    </span>
+                                    <span style="margin: 0 10px;">=</span>
+                                    <span class="fraction">
+                                        <span class="num" style="border-bottom: 3px solid #27AE60;">1</span>
+                                        <span class="denom">2</span>
+                                    </span>
+                                </div>
+                                <div class="celebration" style="margin-top: 15px; font-size: 1.5em;">🎉 Area Model 완성! 🎉</div>
+                            </div>
+                        </div>
+                        <div class="explanation-box" style="background: rgba(39, 174, 96, 0.1); border: 2px solid #27AE60; border-radius: 15px; padding: 20px; margin-top: 30px;">
+                            <h5 style="color: #27AE60; margin-bottom: 15px;">🧮 Area Model의 원리</h5>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
+                                <div>
+                                    <p><strong>🔴 빨간색 영역:</strong> <span class="fraction"><span class="num">3</span><span class="denom">4</span></span> (9칸)</p>
+                                    <p><strong>🔵 파란색 영역:</strong> <span class="fraction"><span class="num">2</span><span class="denom">3</span></span> (8칸)</p>
+                                </div>
+                                <div>
+                                    <p><strong>🎯 겹치는 영역:</strong> 6칸</p>
+                                    <p><strong>📐 계산식:</strong> 3×2 = 6, 4×3 = 12</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="step5" class="animation-step" style="opacity: 0; transform: translateY(20px); transition: all 1.5s ease; margin-top: 40px;">
+                        <h4>5️⃣ 분수띠로도 확인해보기</h4>
+                        <div style="display: flex; justify-content: center; gap: 40px; align-items: center; margin: 20px 0;">
+                            <div style="text-align: center;">
+                                <h5 style="margin-bottom: 15px; color: #2C3E50;">📏 분수띠 모델</h5>
+                                <div style="margin: 20px 0;">
+                                    <p style="font-size: 0.9em; margin-bottom: 10px; color: #7F8C8D;">전체 분수띠</p>
+                                    <div class="fraction-bar-whole" style="width: 240px; height: 30px; background: white; border: 3px solid #2C3E50; border-radius: 8px; position: relative; margin: 0 auto;">
+                                        <div style="position: absolute; left: 25%; top: -3px; bottom: -3px; width: 2px; background: #2C3E50;"></div>
+                                        <div style="position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; background: #2C3E50;"></div>
+                                        <div style="position: absolute; left: 75%; top: -3px; bottom: -3px; width: 2px; background: #2C3E50;"></div>
+                                        <div style="position: absolute; bottom: -25px; left: 12.5%; font-size: 0.8em; color: #7F8C8D;">1/4</div>
+                                        <div style="position: absolute; bottom: -25px; left: 37.5%; font-size: 0.8em; color: #7F8C8D;">2/4</div>
+                                        <div style="position: absolute; bottom: -25px; left: 62.5%; font-size: 0.8em; color: #7F8C8D;">3/4</div>
+                                        <div style="position: absolute; bottom: -25px; left: 87.5%; font-size: 0.8em; color: #7F8C8D;">4/4</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin: 30px 0;">
+                                    <p style="font-size: 0.9em; margin-bottom: 10px; color: #E74C3C;">🔴 <span class="fraction"><span class="num">3</span><span class="denom">4</span></span> 표시</p>
+                                    <div class="fraction-bar-red" style="width: 240px; height: 30px; background: white; border: 3px solid #2C3E50; border-radius: 8px; position: relative; margin: 0 auto;">
+                                        <div style="position: absolute; left: 0; top: 0; width: 75%; height: 100%; background: rgba(231, 76, 60, 0.8); border-radius: 5px 0 0 5px; box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);"></div>
+                                        <div style="position: absolute; left: 25%; top: -3px; bottom: -3px; width: 2px; background: white; z-index: 10;"></div>
+                                        <div style="position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; background: white; z-index: 10;"></div>
+                                        <div style="position: absolute; left: 75%; top: -3px; bottom: -3px; width: 2px; background: #2C3E50;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin: 30px 0;">
+                                    <p style="font-size: 0.9em; margin-bottom: 10px; color: #3498DB;">🔵 그 중 <span class="fraction"><span class="num">2</span><span class="denom">3</span></span> 표시</p>
+                                    <div class="fraction-bar-final" style="width: 240px; height: 30px; background: white; border: 3px solid #2C3E50; border-radius: 8px; position: relative; margin: 0 auto;">
+                                        <!-- 전체 빨간 영역 (3/4) -->
+                                        <div style="position: absolute; left: 0; top: 0; width: 75%; height: 100%; background: rgba(231, 76, 60, 0.6); border-radius: 5px 0 0 5px;"></div>
+                                        <!-- 2/3 중 겹치는 부분 (파란색 그라데이션) -->
+                                        <div style="position: absolute; left: 0; top: 0; width: 50%; height: 100%; background: linear-gradient(90deg, rgba(52, 152, 219, 0.9) 0%, rgba(52, 152, 219, 0.7) 100%); border-radius: 5px 0 0 5px; box-shadow: 0 0 15px rgba(52, 152, 219, 0.6);"></div>
+                                        <div style="position: absolute; left: 25%; top: -3px; bottom: -3px; width: 2px; background: white; z-index: 10;"></div>
+                                        <div style="position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; background: #2C3E50; z-index: 10;"></div>
+                                        <div style="position: absolute; left: 75%; top: -3px; bottom: -3px; width: 2px; background: #2C3E50;"></div>
+                                        <div style="position: absolute; top: 50%; left: 25%; transform: translateY(-50%); color: white; font-weight: bold; font-size: 1.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">1/2</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center;">
+                                <h5 style="margin-bottom: 15px; color: #2C3E50;">🥧 원형 차트</h5>
+                                <div style="position: relative; width: 200px; height: 200px; margin: 0 auto;">
+                                    <!-- 전체 원 -->
+                                    <svg width="200" height="200" viewBox="0 0 200 200" style="transform: rotate(-90deg);">
+                                        <!-- 배경 원 -->
+                                        <circle cx="100" cy="100" r="90" fill="white" stroke="#2C3E50" stroke-width="3"/>
+                                        <!-- 4등분 선 -->
+                                        <line x1="100" y1="10" x2="100" y2="190" stroke="#2C3E50" stroke-width="2"/>
+                                        <line x1="10" y1="100" x2="190" y2="100" stroke="#2C3E50" stroke-width="2"/>
+                                        <!-- 3/4 영역 (빨간색) -->
+                                        <path d="M 100 100 L 100 10 A 90 90 0 1 1 10 100 Z" fill="rgba(231, 76, 60, 0.7)" stroke="#C0392B" stroke-width="2"/>
+                                        <!-- 2/3 중 겹치는 부분 (파란색 그라데이션) -->
+                                        <defs>
+                                            <radialGradient id="blueGradient" cx="50%" cy="50%" r="50%">
+                                                <stop offset="0%" style="stop-color:rgba(52, 152, 219, 0.9);stop-opacity:1" />
+                                                <stop offset="100%" style="stop-color:rgba(52, 152, 219, 0.7);stop-opacity:1" />
+                                            </radialGradient>
+                                        </defs>
+                                        <path d="M 100 100 L 100 10 A 90 90 0 0 1 190 100 Z" fill="url(#blueGradient)" stroke="#2980B9" stroke-width="2"/>
+                                        <!-- 중앙 점 -->
+                                        <circle cx="100" cy="100" r="3" fill="#2C3E50"/>
+                                    </svg>
+                                    <!-- 라벨들 -->
+                                    <div style="position: absolute; top: -5px; left: 50%; transform: translateX(-50%); font-size: 0.8em; color: #7F8C8D;">1/4</div>
+                                    <div style="position: absolute; right: -5px; top: 50%; transform: translateY(-50%); font-size: 0.8em; color: #7F8C8D;">1/4</div>
+                                    <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); font-size: 0.8em; color: #7F8C8D;">1/4</div>
+                                    <div style="position: absolute; left: -5px; top: 50%; transform: translateY(-50%); font-size: 0.8em; color: #7F8C8D;">1/4</div>
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.1em; font-weight: bold; color: #27AE60; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">1/2</div>
+                                </div>
+                                <div style="margin-top: 15px;">
+                                    <div style="display: flex; justify-content: center; gap: 15px; font-size: 0.9em;">
+                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                            <div style="width: 15px; height: 15px; background: rgba(231, 76, 60, 0.7); border-radius: 3px;"></div>
+                                            <span style="color: #E74C3C;">3/4</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                            <div style="width: 15px; height: 15px; background: rgba(52, 152, 219, 0.8); border-radius: 3px;"></div>
+                                            <span style="color: #3498DB;">2/3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="summary-box" style="background: rgba(52, 152, 219, 0.1); border: 2px solid #3498DB; border-radius: 15px; padding: 15px; margin-top: 20px;">
+                            <p style="text-align: center; color: #2C3E50; font-weight: bold; margin: 0;">
+                                📏 분수띠와 🥧 원형 차트로도 같은 답 <span class="fraction"><span class="num">1</span><span class="denom">2</span></span>을 확인할 수 있어요!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <style>
+                    @keyframes sparkle {
+                        0% { transform: scale(1) rotate(0deg); box-shadow: 0 0 10px rgba(78, 205, 196, 0.6); }
+                        100% { transform: scale(1.1) rotate(1deg); box-shadow: 0 0 25px rgba(78, 205, 196, 0.9); }
+                    }
+                    
+                    .animation-step {
+                        background: rgba(255, 255, 255, 0.9);
+                        padding: 20px;
+                        border-radius: 12px;
+                        border: 2px solid #E8F4F8;
+                        margin: 15px 0;
+                    }
+                    
+                    .chocolate-piece:hover {
+                        transform: scale(1.05);
+                        transition: transform 0.2s ease;
+                    }
+                    
+                    .celebration {
+                        animation: bounce 2s infinite;
+                    }
+                    
+                    @keyframes bounce {
+                        0%, 100% { transform: translateY(0); }
+                        50% { transform: translateY(-10px); }
+                    }
+                </style>
+            `;
+            
+            // 단계별 애니메이션 실행
+            setTimeout(() => {
+                document.getElementById('step1').style.opacity = '1';
+                document.getElementById('step1').style.transform = 'translateY(0)';
+            }, 500);
+            
+            setTimeout(() => {
+                document.getElementById('step2').style.opacity = '1';
+                document.getElementById('step2').style.transform = 'translateY(0)';
+            }, 2000);
+            
+            setTimeout(() => {
+                document.getElementById('step3').style.opacity = '1';
+                document.getElementById('step3').style.transform = 'translateY(0)';
+            }, 4000);
+            
+            setTimeout(() => {
+                document.getElementById('step4').style.opacity = '1';
+                document.getElementById('step4').style.transform = 'translateY(0)';
+            }, 6000);
+            
+            setTimeout(() => {
+                document.getElementById('step5').style.opacity = '1';
+                document.getElementById('step5').style.transform = 'translateY(0)';
+            }, 8000);
+        }
+        
+        function resetChocolateAnimation() {
+            const container = document.getElementById('animationContainer');
+            const startBtn = document.getElementById('startAnimation');
+            const resetBtn = document.getElementById('resetAnimation');
+            
+            // 버튼 상태 리셋
+            startBtn.disabled = false;
+            startBtn.style.opacity = '1';
+            resetBtn.disabled = true;
+            resetBtn.style.opacity = '0.6';
+            
+            // 초기 상태로 복원
+            container.innerHTML = `
+                <div style="text-align: center; padding: 50px;">
+                    <div style="font-size: 4em; margin-bottom: 20px;">🧮</div>
+                    <h3 style="color: #7F8C8D; font-size: 1.3em;">애니메이션을 시작하려면 버튼을 클릭하세요!</h3>
+                    <div style="margin-top: 30px; padding: 20px; background: rgba(78, 205, 196, 0.1); border-radius: 15px; border: 2px dashed #4ECDC4;">
+                        <p style="color: #34495E; font-size: 1.1em;">
+                            <span class="big-fraction" style="color: #E74C3C;"><span class="num">3</span><span class="denom">4</span></span> × 
+                            <span class="big-fraction" style="color: #8E44AD;"><span class="num">2</span><span class="denom">3</span></span> = 
+                            <span class="big-fraction" style="color: #27AE60;"><span class="num">?</span><span class="denom">?</span></span>
+                        </p>
+                        <p style="margin-top: 15px; font-size: 0.9em; color: #7F8C8D;">Area Model로 분수의 곱셈을 알아보아요!</p>
+                        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 20px; height: 15px; background: rgba(231, 76, 60, 0.8); border-radius: 3px;"></div>
+                                <span style="font-size: 0.8em; color: #E74C3C;">빨강</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 20px; height: 15px; background: rgba(52, 152, 219, 0.8); border-radius: 3px;"></div>
+                                <span style="font-size: 0.8em; color: #3498DB;">파랑</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <div style="width: 20px; height: 15px; background: linear-gradient(45deg, rgba(231, 76, 60, 0.7) 50%, rgba(52, 152, 219, 0.7) 50%); border-radius: 3px;"></div>
+                                <span style="font-size: 0.8em; color: #8E44AD;">겹침</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 키보드 네비게이션
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'Home') {
+                goToSlide(1);
+            } else if (event.key === 'End') {
+                goToSlide(totalSlides);
+            }
+        });
+
+        // 초기 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('total-slides').textContent = totalSlides;
+            showSlide(1);
+            
+            // 환영 메시지
+            setTimeout(() => {
+                console.log('🎊 분수 곱셈 활용하기에 오신 것을 환영합니다! 🎊');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

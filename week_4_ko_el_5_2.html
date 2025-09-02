@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분수의 곱셈 - 5학년 수학</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+
+        /* 분수 표시 스타일 */
+        .fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 3px;
+            font-size: inherit;
+            font-weight: inherit;
+        }
+        
+        .fraction .num {
+            display: block;
+            border-bottom: 2px solid currentColor;
+            padding: 0 5px 2px 5px;
+            line-height: 1.2;
+        }
+        
+        .fraction .denom {
+            display: block;
+            padding: 2px 5px 0 5px;
+            line-height: 1.2;
+        }
+        
+        .mixed-number {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .mixed-number .whole {
+            font-size: 1em;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .slide {
+            width: 95%;
+            max-width: 1200px;
+            height: 80%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            padding: 15px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #FFD93D;
+        }
+        
+        .slide.active {
+            display: flex;
+            animation: bounceIn 0.8s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-10deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05) rotate(2deg);
+            }
+            70% {
+                transform: scale(0.95) rotate(-1deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        .slide h1 {
+            font-size: 2.2rem;
+            color: #FF6B6B;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .slide h2 {
+            font-size: 1.8rem;
+            color: #4ECDC4;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .slide h3 {
+            font-size: 1.3rem;
+            color: #45B7D1;
+            margin-bottom: 5px;
+        }
+        
+        .slide h4 {
+            font-size: 1.1rem;
+            color: #96CEB4;
+            margin-bottom: 5px;
+        }
+        
+        .slide p, .slide li {
+            font-size: 0.95rem;
+            line-height: 1.3;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+            border: none;
+            padding: 20px 35px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.6);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(45deg, #96CEB4, #FFEAA7);
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .big-emoji {
+            font-size: 2.5rem;
+            margin: 5px 0;
+        }
+        
+        .concept-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            margin: 5px auto;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .activity-box {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            color: #2c3e50;
+            padding: 10px;
+            border-radius: 12px;
+            margin: 5px auto;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px solid #FF6B6B;
+        }
+        
+        .example-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #2c3e50;
+            padding: 10px;
+            border-radius: 12px;
+            margin: 5px auto;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px solid #4ECDC4;
+        }
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+            margin: 8px 0;
+        }
+        
+        .problem-card {
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            border: 2px solid #FFD93D;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-color: #FF6B6B;
+        }
+        
+        .big-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #FF6B6B;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin: 5px 0;
+        }
+        
+        .fraction-visual {
+            background: white;
+            border: 3px solid #4ECDC4;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 600px;
+        }
+        
+        .fraction-box {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        
+        .fraction {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0 5px;
+        }
+        
+        .fraction .numerator {
+            display: block;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 2px;
+            font-size: 1em;
+            line-height: 1;
+        }
+        
+        .fraction .denominator {
+            display: block;
+            padding-top: 2px;
+            font-size: 1em;
+            line-height: 1;
+        }
+        
+        .big-fraction {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 0 10px;
+        }
+        
+        .big-fraction .numerator {
+            display: block;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 3px;
+            font-size: 1em;
+            line-height: 1;
+        }
+        
+        .big-fraction .denominator {
+            display: block;
+            padding-top: 3px;
+            font-size: 1em;
+            line-height: 1;
+        }
+        
+        .mixed-number {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0 5px;
+        }
+        
+        .mixed-number .whole {
+            margin-right: 5px;
+        }
+        
+        .equation-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .visual-model {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .circle {
+            width: 80px;
+            height: 80px;
+            border: 3px solid #2c3e50;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 5px;
+            position: relative;
+            background: #f8f9fa;
+        }
+        
+        .circle.half {
+            background: linear-gradient(90deg, #FF6B6B 50%, #f8f9fa 50%);
+        }
+        
+        .circle.quarter {
+            background: #f8f9fa;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .circle.quarter::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 50%;
+            background: #FF6B6B;
+            transform-origin: 0 0;
+            border-radius: 0 0 0 100%;
+            z-index: 1;
+        }
+        
+        .cake-slice {
+            width: 80px;
+            height: 80px;
+            border-radius: 50% 0 50% 50%;
+            background: linear-gradient(45deg, #8B4513 0%, #D2691E 50%, #F4A460 100%);
+            border: 3px solid #654321;
+            display: inline-block;
+            margin: 8px;
+            position: relative;
+            transform: rotate(-45deg);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .cake-slice::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            height: 15px;
+            background: linear-gradient(to right, #FFE4E1, #FFF8DC, #FFE4E1);
+            border-radius: 50% 0 0 0;
+            border: 2px solid #DDD;
+            border-bottom: none;
+        }
+        
+        .cake-slice::after {
+            content: '🍓';
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            font-size: 12px;
+            z-index: 2;
+        }
+        
+        .circle.third {
+            background: conic-gradient(#FF6B6B 120deg, #f8f9fa 120deg);
+        }
+        
+        .rectangle {
+            width: 120px;
+            height: 40px;
+            border: 3px solid #2c3e50;
+            display: inline-block;
+            margin: 5px;
+            background: #f8f9fa;
+        }
+        
+        .rectangle.shaded-half {
+            background: linear-gradient(90deg, #4ECDC4 50%, #f8f9fa 50%);
+        }
+        
+        .rectangle.shaded-third {
+            background: linear-gradient(90deg, #4ECDC4 33.33%, #f8f9fa 33.33%);
+        }
+        
+        .quiz-container {
+            background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+            padding: 8px;
+            border-radius: 12px;
+            margin: 8px auto;
+            max-width: 700px;
+            border: 2px solid #e84393;
+        }
+        
+        .quiz-option {
+            background: white;
+            margin: 4px 0;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 0.9rem;
+        }
+        
+        .quiz-option:hover {
+            border-color: #e84393;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .correct {
+            background: linear-gradient(45deg, #00b894, #00cec9) !important;
+            color: white !important;
+            animation: celebration 1s ease-in-out;
+        }
+        
+        @keyframes celebration {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.05) rotate(2deg); }
+            50% { transform: scale(1.1) rotate(-2deg); }
+            75% { transform: scale(1.05) rotate(2deg); }
+        }
+        
+        .thinking-emoji {
+            font-size: 1.5rem;
+        }
+        
+        .celebration-emoji {
+            font-size: 1.8rem;
+        }
+        
+        .step-by-step {
+            background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%);
+            color: white;
+            padding: 8px;
+            border-radius: 12px;
+            margin: 8px 0;
+            border: 2px solid #d63031;
+        }
+        
+        .step {
+            background: white;
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 8px;
+            border-left: 3px solid #00b894;
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 0.9rem;
+            color: #2c3e50;
+        }
+        
+        .step-number {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .calculation-box {
+            background: #f8f9fa;
+            border: 3px dashed #6c5ce7;
+            border-radius: 12px;
+            padding: 10px;
+            margin: 8px auto;
+            max-width: 600px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .fun-tip {
+            background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+            color: white;
+            padding: 8px;
+            border-radius: 12px;
+            margin: 8px auto;
+            max-width: 650px;
+            border: 2px solid #e84393;
+            position: relative;
+        }
+        
+        .fun-tip::before {
+            content: "💡";
+            font-size: 1.5rem;
+            position: absolute;
+            top: 8px;
+            right: 10px;
+        }
+        
+        .equation {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #2c3e50;
+        }
+        
+        .multiplication-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .times-sign {
+            font-size: 2rem;
+            color: #e74c3c;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        
+        .equals-sign {
+            font-size: 2rem;
+            color: #27ae60;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        
+        .fraction-group {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter" id="slideCounter">1 / 19</div>
+        
+        <!-- Slide 1: 제목 -->
+        <div class="slide active">
+            <div class="big-emoji">🧮</div>
+            <h1>분수의 곱셈</h1>
+            <h2>5학년 2학기 수학 4주차</h2>
+            <div class="celebration-emoji">🎯 ✨ 🌟</div>
+            <p style="font-size: 1.2rem; color: #96CEB4;">분수와 자연수를 곱해보자!</p>
+            <div class="fraction-visual">
+                <div class="equation">
+                    <div class="fraction-group">
+                        <span class="big-fraction">
+                            <span class="numerator">2</span>
+                            <span class="denominator">3</span>
+                        </span>
+                        <span class="times-sign">×</span>
+                        <span class="big-number">4</span>
+                        <span class="equals-sign">=</span>
+                        <span class="thinking-emoji">?</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 2: 학습 목표 -->
+        <div class="slide">
+            <h2>🎯 오늘의 미션</h2>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="big-emoji">🔢</div>
+                    <h4>분수×자연수</h4>
+                    <p>분수에 자연수를 곱하는 방법을 배워요</p>
+                </div>
+                <div class="problem-card">
+                    <div class="big-emoji">🎨</div>
+                    <h4>시각적 이해</h4>
+                    <p>그림으로 분수 곱셈을 이해해요</p>
+                </div>
+                <div class="problem-card">
+                    <div class="big-emoji">🎯</div>
+                    <h4>실생활 적용</h4>
+                    <p>분수 곱셈으로 문제를 해결해요</p>
+                </div>
+            </div>
+            <div class="concept-box">
+                <h3>🌟 핵심 포인트</h3>
+                <p>분수 × 자연수 = <span class="highlight">
+                    <span class="fraction">
+                        <span class="numerator">분자 × 자연수</span>
+                        <span class="denominator">분모</span>
+                    </span>
+                </span></p>
+                <div style="font-size: 1.1rem; margin-top: 8px;">
+                    <div class="equation-line">
+                        <span>예:</span>
+                        <span class="fraction">
+                            <span class="numerator">2</span>
+                            <span class="denominator">3</span>
+                        </span>
+                        <span>×</span>
+                        <span>4</span>
+                        <span>=</span>
+                        <span class="fraction">
+                            <span class="numerator">2 × 4</span>
+                            <span class="denominator">3</span>
+                        </span>
+                        <span>=</span>
+                        <span class="fraction">
+                            <span class="numerator">8</span>
+                            <span class="denominator">3</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3: 도입 상황 -->
+        <div class="slide">
+            <h2>🍰 케이크를 나누어요!</h2>
+            <div class="activity-box">
+                <div class="big-emoji">🎂</div>
+                <h3>상황 이해하기</h3>
+                <p style="font-size: 1.2rem;">전체 케이크의 
+                    <span class="fraction" style="color: #e74c3c; font-size: 1.3rem;">
+                        <span class="numerator">1</span>
+                        <span class="denominator">4</span>
+                    </span>을 한 조각이라고 해요.</p>
+                <p style="font-size: 1.2rem;">이런 조각을 <strong style="color: #e74c3c;">3개</strong> 먹는다면?</p>
+                <div class="visual-model">
+                    <div class="cake-slice"></div>
+                    <div class="times-sign">×</div>
+                    <div class="big-number">3</div>
+                    <div class="equals-sign">=</div>
+                    <div class="thinking-emoji">🤔</div>
+                </div>
+                <div class="thinking-emoji">🤔</div>
+                <p style="font-size: 1.1rem; color: #e74c3c;">전체 케이크의 몇 분의 몇일까요?</p>
+            </div>
+        </div>
+        
+        <!-- Slide 4: 시각적 이해 -->
+        <div class="slide">
+            <h2>👀 그림으로 이해해보자!</h2>
+            <div class="example-box">
+                <div class="equation-line">
+                    <span class="big-fraction">
+                        <span class="numerator">1</span>
+                        <span class="denominator">4</span>
+                    </span>
+                    <span class="times-sign">×</span>
+                    <span class="big-number">3</span>
+                </div>
+                <div class="visual-model">
+                    <div class="cake-slice"></div>
+                    <div>+</div>
+                    <div class="cake-slice"></div>
+                    <div>+</div>
+                    <div class="cake-slice"></div>
+                </div>
+                <div class="equation-line">
+                    <span class="fraction">
+                        <span class="numerator">1</span>
+                        <span class="denominator">4</span>
+                    </span>
+                    <span>+</span>
+                    <span class="fraction">
+                        <span class="numerator">1</span>
+                        <span class="denominator">4</span>
+                    </span>
+                    <span>+</span>
+                    <span class="fraction">
+                        <span class="numerator">1</span>
+                        <span class="denominator">4</span>
+                    </span>
+                </div>
+                <div class="equals-sign" style="font-size: 2rem; margin: 10px 0;">=</div>
+                <div class="fraction-visual">
+                    <span class="big-fraction">
+                        <span class="numerator">3</span>
+                        <span class="denominator">4</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: 계산 방법 -->
+        <div class="slide">
+            <h2>📚 계산 방법 배우기</h2>
+            <div class="step-by-step">
+                <h3 style="color: white;">분수 × 자연수 계산법</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>분자에 자연수를 곱해요</strong>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>분모는 그대로 둬요</strong>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>답을 간단히 만들어요 (기약분수)</strong>
+                </div>
+            </div>
+            
+            <div class="calculation-box">
+                <h4>예시: 
+                    <span class="fraction">
+                        <span class="numerator">2</span>
+                        <span class="denominator">5</span>
+                    </span>
+                    × 3
+                </h4>
+                <div class="equation-line">
+                    <span>=</span>
+                    <span class="fraction">
+                        <span class="numerator">2 × 3</span>
+                        <span class="denominator">5</span>
+                    </span>
+                </div>
+                <div class="equation-line">
+                    <span>=</span>
+                    <span class="fraction">
+                        <span class="numerator">6</span>
+                        <span class="denominator">5</span>
+                    </span>
+                </div>
+                <p style="font-size: 1.2rem; margin: 8px 0; color: #27ae60;">
+                    = <span class="mixed-number">
+                        <span class="whole">1</span>
+                        <span class="fraction">
+                            <span class="numerator">1</span>
+                            <span class="denominator">5</span>
+                        </span>
+                    </span> (대분수)
+                </p>
+            </div>
+        </div>
+        
+        <!-- Slide 6: 연습 문제 1 -->
+        <div class="slide">
+            <h2>✏️ 연습해보자! (1)</h2>
+            <div class="activity-box">
+                <div class="big-emoji">🎯</div>
+                <h3>문제 1</h3>
+                <div class="equation-line">
+                    <span class="big-fraction">
+                        <span class="numerator">1</span>
+                        <span class="denominator">3</span>
+                    </span>
+                    <span class="times-sign">×</span>
+                    <span class="big-number">2</span>
+                    <span class="equals-sign">=</span>
+                    <div class="thinking-emoji">?</div>
+                </div>
+                
+                <div class="visual-model">
+                    <div class="circle third"></div>
+                    <div class="times-sign">×</div>
+                    <div class="big-number">2</div>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-option" onclick="checkAnswer1(this, true)">A) 
+                        <span class="fraction">
+                            <span class="numerator">2</span>
+                            <span class="denominator">3</span>
+                        </span>
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer1(this, false)">B) 
+                        <span class="fraction">
+                            <span class="numerator">1</span>
+                            <span class="denominator">6</span>
+                        </span>
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer1(this, false)">C) 
+                        <span class="fraction">
+                            <span class="numerator">3</span>
+                            <span class="denominator">2</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 7: 연습 문제 2 -->
+        <div class="slide">
+            <h2>✏️ 연습해보자! (2)</h2>
+            <div class="activity-box">
+                <div class="big-emoji">🎯</div>
+                <h3>문제 2</h3>
+                <div class="equation">
+                    <div class="fraction-group">
+                        <div class="fraction-box">
+                            <div class="fraction">3</div>
+                            <div class="fraction-bar"></div>
+                            <div class="fraction">4</div>
+                        </div>
+                        <div class="times-sign">×</div>
+                        <div class="big-number">4</div>
+                        <div class="equals-sign">=</div>
+                        <div class="thinking-emoji">?</div>
+                    </div>
+                </div>
+                
+                <div class="calculation-box">
+                    <p style="font-size: 1.1rem;">단계별로 계산해보세요!</p>
+                    <p style="font-size: 1rem;">1) 분자에 4를 곱하면?</p>
+                    <p style="font-size: 1rem;">2) 분모는 그대로?</p>
+                    <p style="font-size: 1rem;">3) 답을 간단히 하면?</p>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-option" onclick="checkAnswer2(this, false)">A) 12/4 (약분 안 함)</div>
+                    <div class="quiz-option" onclick="checkAnswer2(this, true)">B) 3 (약분 함)</div>
+                    <div class="quiz-option" onclick="checkAnswer2(this, false)">C) 7/4</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 8: 자연수×분수 -->
+        <div class="slide">
+            <h2>🔄 순서를 바꿔보자!</h2>
+            <div class="concept-box">
+                <h3>자연수 × 분수</h3>
+                <p style="font-size: 1.3rem;">곱셈에서는 순서를 바꿔도 결과가 같아요!</p>
+                <div class="equation">
+                    <div class="equation-line" style="font-size: 1.5rem; margin: 15px 0;">
+                        <span class="big-number">2</span>
+                        <span class="times-sign">×</span>
+                        <span class="big-fraction" style="color: white;">
+                            <span class="numerator">1</span>
+                            <span class="denominator">3</span>
+                        </span>
+                        <span class="equals-sign">=</span>
+                        <span class="big-fraction" style="color: white;">
+                            <span class="numerator">1</span>
+                            <span class="denominator">3</span>
+                        </span>
+                        <span class="times-sign">×</span>
+                        <span class="big-number">2</span>
+                    </div>
+                </div>
+                <p style="font-size: 1.2rem;">교환법칙이 성립해요!</p>
+            </div>
+            
+            <div class="example-box">
+                <h4>예시</h4>
+                <div class="equation-line">
+                    <span class="big-number">5</span>
+                    <span class="times-sign">×</span>
+                    <span class="big-fraction">
+                        <span class="numerator">2</span>
+                        <span class="denominator">7</span>
+                    </span>
+                    <span class="equals-sign">=</span>
+                    <span class="big-fraction">
+                        <span class="numerator">2</span>
+                        <span class="denominator">7</span>
+                    </span>
+                    <span class="times-sign">×</span>
+                    <span class="big-number">5</span>
+                    <span class="equals-sign">=</span>
+                    <span class="big-fraction">
+                        <span class="numerator">10</span>
+                        <span class="denominator">7</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: 실생활 문제 1 -->
+        <div class="slide">
+            <h2>🌟 실생활에서 활용해보자!</h2>
+            <div class="activity-box">
+                <div class="big-emoji">🍫</div>
+                <h3>초콜릿 나누기</h3>
+                <p style="font-size: 1.2rem;">초콜릿 한 개의 <span class="fraction">
+                        <span class="num">2</span>
+                        <span class="denom">5</span>
+                    </span>을 하루에 먹어요.</p>
+                <p style="font-size: 1.2rem;">3일 동안 먹으면 총 얼마나 먹을까요?</p>
+                
+                <div class="visual-model">
+                    <div class="rectangle shaded-third"></div>
+                    <div>×</div>
+                    <div class="big-number">3</div>
+                </div>
+                
+                <div class="calculation-box">
+                    <div class="equation-line">
+                        <span class="fraction">
+                            <span class="num">2</span>
+                            <span class="denom">5</span>
+                        </span>
+                        <span style="margin: 0 10px;">×</span>
+                        <span style="font-size: 1.2em;">3</span>
+                        <span style="margin: 0 10px;">=</span>
+                        <span class="fraction">
+                            <span class="num">2 × 3</span>
+                            <span class="denom">5</span>
+                        </span>
+                        <span style="margin: 0 10px;">=</span>
+                        <span class="fraction">
+                            <span class="num">6</span>
+                            <span class="denom">5</span>
+                        </span>
+                    </div>
+                    <p style="font-size: 1.1rem; margin-top: 10px;">= <span class="mixed-number"><span class="whole">1</span>과 <span class="fraction"><span class="num">1</span><span class="denom">5</span></span></span> (1.2개)</p>
+                </div>
+                
+                <div class="fun-tip">
+                    <p>하루에 <span class="fraction">
+                            <span class="num">2</span>
+                            <span class="denom">5</span>
+                        </span>개씩 3일 먹으면 초콜릿 1개보다 조금 더 먹게 돼요!</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 10: 실생활 문제 2 -->
+        <div class="slide">
+            <h2>🌟 실생활 문제 도전!</h2>
+            <div class="activity-box">
+                <div class="big-emoji">🥛</div>
+                <h3>우유 마시기</h3>
+                <p style="font-size: 1.2rem;">우유 한 컵의 3/4을 하루에 마셔요.</p>
+                <p style="font-size: 1.2rem;">4일 동안 마시면 우유를 총 몇 컵 마실까요?</p>
+                
+                <div class="calculation-box">
+                    <p style="font-size: 1.1rem;">3/4 × 4 = ?</p>
+                    <p style="font-size: 1.1rem;">단계별로 계산해보세요!</p>
+                </div>
+                
+                <div class="quiz-container">
+                    <h4 style="color: #2c3e50;">정답을 선택하세요!</h4>
+                    <div class="quiz-option" onclick="checkMilk(this, false)">A) 7/4컵 (<span class="mixed-number"><span class="whole">1</span>과 <span class="fraction"><span class="num">3</span><span class="denom">4</span></span></span>컵)</div>
+                    <div class="quiz-option" onclick="checkMilk(this, true)">B) 3컵</div>
+                    <div class="quiz-option" onclick="checkMilk(this, false)">C) 12/4컵 (약분 안 함)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 11: 대분수와의 곱셈 -->
+        <div class="slide">
+            <h2>🔢 대분수도 해보자!</h2>
+            <div class="concept-box">
+                <h3>대분수 × 자연수</h3>
+                <p style="font-size: 1.2rem;">대분수는 가분수로 바꾼 다음 계산해요!</p>
+            </div>
+            
+            <div class="step-by-step">
+                <h3 style="color: white;">계산 순서</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>대분수를 가분수로 바꿔요</strong>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>가분수 × 자연수를 계산해요</strong>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>답을 대분수나 자연수로 나타내요</strong>
+                </div>
+            </div>
+            
+            <div class="calculation-box">
+                <h4>예시: <span class="mixed-number"><span class="whole">1</span>과 <span class="fraction"><span class="num">1</span><span class="denom">3</span></span></span> × 2</h4>
+                <p>1) <span class="mixed-number"><span class="whole">1</span>과 <span class="fraction"><span class="num">1</span><span class="denom">3</span></span></span> = 4/3 (가분수로)</p>
+                <p>2) 4/3 × 2 = 8/3</p>
+                <p>3) 8/3 = <span class="mixed-number"><span class="whole">2</span>와 <span class="fraction"><span class="num">2</span><span class="denom">3</span></span></span> (대분수로)</p>
+            </div>
+        </div>
+        
+        <!-- Slide 12: 대분수 연습 -->
+        <div class="slide">
+            <h2>✏️ 대분수 연습하기</h2>
+            <div class="activity-box">
+                <div class="big-emoji">🎯</div>
+                <h3>문제 3</h3>
+                <div class="equation">
+                    <span style="font-size: 1.8rem;"><span class="mixed-number"><span class="whole">2</span>와 <span class="fraction"><span class="num">1</span><span class="denom">4</span></span></span> × 3 = ?</span>
+                </div>
+                
+                <div class="step-by-step">
+                    <h4 style="color: white;">단계별 풀이</h4>
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <strong><span class="mixed-number"><span class="whole">2</span>와 <span class="fraction"><span class="num">1</span><span class="denom">4</span></span></span>를 가분수로: (2×4+1)/4 = 9/4</strong>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <strong>9/4 × 3 = 27/4</strong>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <strong>27/4를 대분수로: ?</strong>
+                    </div>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-option" onclick="checkBig(this, false)">A) <span class="mixed-number"><span class="whole">6</span>과 <span class="fraction"><span class="num">1</span><span class="denom">4</span></span></span></div>
+                    <div class="quiz-option" onclick="checkBig(this, true)">B) <span class="mixed-number"><span class="whole">6</span>과 <span class="fraction"><span class="num">3</span><span class="denom">4</span></span></span></div>
+                    <div class="quiz-option" onclick="checkBig(this, false)">C) <span class="mixed-number"><span class="whole">7</span>과 <span class="fraction"><span class="num">1</span><span class="denom">4</span></span></span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 13: 종합 문제 -->
+        <div class="slide">
+            <h2>🏆 종합 문제 도전!</h2>
+            <div class="activity-box">
+                <div class="big-emoji">📚</div>
+                <h3>도서관에서</h3>
+                <p style="font-size: 1.1rem;">민수는 하루에 책의 2/7을 읽어요.</p>
+                <p style="font-size: 1.1rem;">5일 동안 읽으면 책을 모두 다 읽을 수 있을까요?</p>
+                
+                <div class="calculation-box">
+                    <p>2/7 × 5 = ?</p>
+                </div>
+                
+                <div class="fun-tip">
+                    <h4>🤔 생각해보기</h4>
+                    <p style="font-size: 1rem;">답이 1보다 크면 한 권을 다 읽고도 남아요!</p>
+                    <p style="font-size: 1rem;">답이 1과 같으면 딱 한 권을 다 읽어요!</p>
+                    <p style="font-size: 1rem;">답이 1보다 작으면 한 권을 다 못 읽어요!</p>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-option" onclick="checkBook(this, true)">정답 보기 📖</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 14: 게임 - 분수 곱셈 빙고 -->
+        <div class="slide">
+            <h2>🎮 분수 곱셈 빙고!</h2>
+            <div class="activity-box">
+                <div class="big-emoji">🎯</div>
+                <h3>게임 방법</h3>
+                <p style="font-size: 1.1rem;">아래 계산들의 답을 구해보세요!</p>
+            </div>
+            
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h4>1/2 × 4</h4>
+                    <div class="quiz-option" onclick="showBingo(this, '2')">클릭!</div>
+                </div>
+                <div class="problem-card">
+                    <h4>2/3 × 3</h4>
+                    <div class="quiz-option" onclick="showBingo(this, '2')">클릭!</div>
+                </div>
+                <div class="problem-card">
+                    <h4>3/5 × 5</h4>
+                    <div class="quiz-option" onclick="showBingo(this, '3')">클릭!</div>
+                </div>
+                <div class="problem-card">
+                    <h4>1/4 × 8</h4>
+                    <div class="quiz-option" onclick="showBingo(this, '2')">클릭!</div>
+                </div>
+                <div class="problem-card">
+                    <h4>5/6 × 6</h4>
+                    <div class="quiz-option" onclick="showBingo(this, '5')">클릭!</div>
+                </div>
+                <div class="problem-card">
+                    <h4>2/7 × 7</h4>
+                    <div class="quiz-option" onclick="showBingo(this, '2')">클릭!</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 15: 오늘 배운 내용 정리 -->
+        <div class="slide">
+            <h2>📝 오늘 배운 내용 정리</h2>
+            <div class="concept-box">
+                <h3>🎯 핵심 내용</h3>
+                <div class="equation">분수 × 자연수 = (분자 × 자연수) ÷ 분모</div>
+            </div>
+            
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="big-emoji">✅</div>
+                    <h4>분수×자연수</h4>
+                    <p>분자에 자연수를 곱해요</p>
+                </div>
+                <div class="problem-card">
+                    <div class="big-emoji">✅</div>
+                    <h4>자연수×분수</h4>
+                    <p>순서를 바꿔도 같아요</p>
+                </div>
+                <div class="problem-card">
+                    <div class="big-emoji">✅</div>
+                    <h4>대분수×자연수</h4>
+                    <p>가분수로 바꿔서 계산해요</p>
+                </div>
+            </div>
+            
+            <div class="fun-tip">
+                <h4>💡 기억할 점</h4>
+                <p style="font-size: 1.1rem;">답은 항상 기약분수나 대분수로 나타내주세요!</p>
+            </div>
+        </div>
+        
+        <!-- Slide 16: 다음 시간 예고 -->
+        <div class="slide">
+            <h2>🔮 다음 시간 예고</h2>
+            <div class="activity-box">
+                <div class="big-emoji">🧩</div>
+                <h3>다음에 배울 내용</h3>
+                <p style="font-size: 1.3rem;"><strong>분수 × 분수</strong></p>
+                <div class="equation">
+                    <div class="fraction-group">
+                        <div class="fraction-box">
+                            <div class="fraction">2</div>
+                            <div class="fraction-bar"></div>
+                            <div class="fraction">3</div>
+                        </div>
+                        <div class="times-sign">×</div>
+                        <div class="fraction-box">
+                            <div class="fraction">1</div>
+                            <div class="fraction-bar"></div>
+                            <div class="fraction">4</div>
+                        </div>
+                        <div class="equals-sign">=</div>
+                        <div class="thinking-emoji">🤔</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fun-tip">
+                <h4>🏠 숙제</h4>
+                <p style="font-size: 1.1rem;">집에서 분수가 사용되는 상황을 3가지 이상 찾아보세요!</p>
+                <p style="font-size: 1.1rem;">예: 요리할 때, 시간을 나타낼 때 등</p>
+            </div>
+            
+            <div class="concept-box">
+                <h3>🎊 수고했어요!</h3>
+                <p style="font-size: 1.2rem;">오늘도 열심히 공부한 여러분 모두 최고예요!</p>
+            </div>
+        </div>
+        
+        <!-- Slide 17: 연습 문제 모음 -->
+        <div class="slide">
+            <h2>📝 추가 연습 문제</h2>
+            <div class="activity-box">
+                <div class="big-emoji">💪</div>
+                <h3>더 연습해보기</h3>
+                <div class="problem-grid">
+                    <div class="problem-card">
+                        <h4>문제 1</h4>
+                        <p><span class="fraction">
+                                <span class="num">1</span>
+                                <span class="denom">5</span>
+                            </span> × 10 = ?</p>
+                        <div class="quiz-option" onclick="showPractice(this, '10/5 = 2')">정답보기</div>
+                    </div>
+                    <div class="problem-card">
+                        <h4>문제 2</h4>
+                        <p><span class="fraction">
+                                <span class="num">3</span>
+                                <span class="denom">8</span>
+                            </span> × 4 = ?</p>
+                        <div class="quiz-option" onclick="showPractice(this, '12/8 = 3/2 = 1과1/2')">정답보기</div>
+                    </div>
+                    <div class="problem-card">
+                        <h4>문제 3</h4>
+                        <p><span class="mixed-number"><span class="whole">2</span>와<span class="fraction"><span class="num">1</span><span class="denom">6</span></span></span> × 3 = ?</p>
+                        <div class="quiz-option" onclick="showPractice(this, '13/6 × 3 = 39/6 = 13/2 = 6과1/2')">정답보기</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 18: 도전 문제 -->
+        <div class="slide">
+            <h2>🏆 도전 문제</h2>
+            <div class="activity-box">
+                <div class="big-emoji">🧠</div>
+                <h3>생각해보세요!</h3>
+                <div class="fun-tip">
+                    <h4>🌟 도전 문제</h4>
+                    <p style="font-size: 1.3rem;">어떤 분수에 6을 곱하면 4가 됩니다.</p>
+                    <p style="font-size: 1.3rem;">이 분수는 무엇일까요?</p>
+                    <div class="quiz-container">
+                        <div class="quiz-option" onclick="showChallenge(this)">정답 보기 🎯</div>
+                    </div>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>💡 힌트</h4>
+                    <p style="font-size: 1.1rem;">□ × 6 = 4</p>
+                    <p style="font-size: 1.1rem;">□ = 4 ÷ 6 = ?</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 19: 마무리 -->
+        <div class="slide">
+            <h1>🎉 4주차 완료!</h1>
+            <div class="concept-box">
+                <h2>오늘 배운 것들</h2>
+                <div class="celebration-emoji">🧮 ✨ 🎯</div>
+                <p style="font-size: 1.2rem;">✅ 분수 × 자연수 계산법</p>
+                <p style="font-size: 1.2rem;">✅ 시각적 모델로 이해하기</p>
+                <p style="font-size: 1.2rem;">✅ 실생활 문제 해결하기</p>
+                <p style="font-size: 1.2rem;">✅ 대분수와의 곱셈</p>
+            </div>
+            
+            <div class="activity-box">
+                <h3>🏠 다음 주 예고</h3>
+                <p style="font-size: 1.1rem;">분수 × 분수 계산 방법</p>
+                <p style="font-size: 1.1rem;">더 복잡한 분수 곱셈에 도전해보아요!</p>
+            </div>
+            
+            <div class="celebration-emoji">🌟 🎊 ✨ 🎉 ✨ 🎊 🌟</div>
+            <p style="font-size: 1.1rem; color: #96CEB4;">분수 곱셈 마스터가 되었어요!</p>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ 이전</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">다음 ▶</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        // MathJax 렌더링
+        window.addEventListener('load', function() {
+            MathJax.typesetPromise().then(() => {
+                console.log('MathJax rendering complete');
+            }).catch((err) => console.log(err.message));
+        });
+        
+        // 슬라이드 변경 시 MathJax 다시 렌더링
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // MathJax 다시 렌더링
+            MathJax.typesetPromise([slides[currentSlide]]).then(() => {
+                // 렌더링 완료
+            }).catch((err) => console.log(err.message));
+        }
+        
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+        
+        // 키보드 조작
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+        
+        // 퀴즈 정답 확인 함수들
+        function checkAnswer1(element, isCorrect) {
+            const options = element.parentNode.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                if (option === element && isCorrect) {
+                    option.classList.add('correct');
+                    option.innerHTML += ' 🎉 정답! 1/3 × 2 = 2/3';
+                } else if (option === element && !isCorrect) {
+                    option.style.background = '#ff7675';
+                    option.style.color = 'white';
+                    option.innerHTML += ' ❌ 다시 생각해보세요!';
+                } else {
+                    option.style.opacity = '0.5';
+                }
+                option.style.pointerEvents = 'none';
+            });
+        }
+        
+        function checkAnswer2(element, isCorrect) {
+            const options = element.parentNode.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                if (option === element && isCorrect) {
+                    option.classList.add('correct');
+                    option.innerHTML += ' 🎉 정답! 3/4 × 4 = 12/4 = 3';
+                } else if (option === element && !isCorrect) {
+                    option.style.background = '#ff7675';
+                    option.style.color = 'white';
+                    option.innerHTML += ' ❌ 약분을 해주세요!';
+                } else {
+                    option.style.opacity = '0.5';
+                }
+                option.style.pointerEvents = 'none';
+            });
+        }
+        
+        function checkMilk(element, isCorrect) {
+            const options = element.parentNode.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                if (option === element && isCorrect) {
+                    option.classList.add('correct');
+                    option.innerHTML += ' 🥛 정답! 3/4 × 4 = 12/4 = 3컵';
+                } else if (option === element && !isCorrect) {
+                    option.style.background = '#ff7675';
+                    option.style.color = 'white';
+                    option.innerHTML += ' ❌ 계산을 다시 해보세요!';
+                } else {
+                    option.style.opacity = '0.5';
+                }
+                option.style.pointerEvents = 'none';
+            });
+        }
+        
+        function checkBig(element, isCorrect) {
+            const options = element.parentNode.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                if (option === element && isCorrect) {
+                    option.classList.add('correct');
+                    option.innerHTML += ' 🎉 정답! 27÷4 = 6나머지3 = 6과3/4';
+                } else if (option === element && !isCorrect) {
+                    option.style.background = '#ff7675';
+                    option.style.color = 'white';
+                    option.innerHTML += ' ❌ 나눗셈을 다시 해보세요!';
+                } else {
+                    option.style.opacity = '0.5';
+                }
+                option.style.pointerEvents = 'none';
+            });
+        }
+        
+        function checkBook(element, isCorrect) {
+            element.classList.add('correct');
+            element.innerHTML = '📖 정답: 2/7 × 5 = 10/7 = 1과3/7. 한 권보다 조금 더 읽을 수 있어요!';
+            element.style.pointerEvents = 'none';
+        }
+        
+        function showBingo(element, answer) {
+            element.classList.add('correct');
+            element.innerHTML = `🎯 ${answer}`;
+            element.style.pointerEvents = 'none';
+        }
+        
+        function showPractice(element, answer) {
+            element.classList.add('correct');
+            element.innerHTML = `✅ ${answer}`;
+            element.style.pointerEvents = 'none';
+        }
+        
+        function showChallenge(element) {
+            element.classList.add('correct');
+            element.innerHTML = '🎯 정답: 2/3 (2/3 × 6 = 12/3 = 4)';
+            element.style.pointerEvents = 'none';
+        }
+        
+        // 초기화
+        showSlide(0);
+    </script>
+</body>
+</html>

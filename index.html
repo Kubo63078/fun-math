@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재미있는 수학 교실 📚 - 5학년 2학기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            padding: 40px;
+            text-align: center;
+            border: 5px solid #FFD93D;
+            animation: bounceIn 0.8s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-10deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05) rotate(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .title {
+            font-size: 3em;
+            color: #2C3E50;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: rainbow-text 3s ease-in-out infinite;
+        }
+
+        @keyframes rainbow-text {
+            0%, 100% { color: #2C3E50; }
+            25% { color: #E74C3C; }
+            50% { color: #3498DB; }
+            75% { color: #9B59B6; }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #7F8C8D;
+            margin-bottom: 40px;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .lesson-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .lesson-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .lesson-card:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .lesson-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .lesson-title {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .lesson-description {
+            font-size: 1em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .lesson-emoji {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .coming-soon {
+            background: linear-gradient(135deg, #95A5A6, #7F8C8D);
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .coming-soon:hover {
+            transform: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #ECF0F1;
+            color: #7F8C8D;
+            font-size: 1.1em;
+        }
+
+        .footer-emoji {
+            font-size: 1.5em;
+            margin: 0 5px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .title {
+                font-size: 2em;
+            }
+            
+            .subtitle {
+                font-size: 1.2em;
+            }
+            
+            .lessons-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .lesson-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1 class="title">📚 재미있는 수학 교실 📚</h1>
+        <p class="subtitle">초등학교 5학년 2학기 수학 교육과정</p>
+        
+        <!-- 단원별 구성 -->
+        <div style="margin-bottom: 40px;">
+            <h2 style="color: #2C3E50; font-size: 1.8em; margin-bottom: 20px;">📖 2015 개정 교육과정 기준</h2>
+            
+            <!-- 1단원: 수의 범위와 어림하기 -->
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; padding: 20px; margin: 20px 0; color: white;">
+                <h3 style="margin-bottom: 15px;">📏 1단원: 수의 범위와 어림하기 (1~3주차)</h3>
+                <div class="lessons-grid">
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">📐</span>
+                        <div class="lesson-number">1주차</div>
+                        <div class="lesson-title">수의 범위</div>
+                        <div class="lesson-description">
+                            이상, 이하, 초과, 미만의<br>
+                            의미를 배워요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">🎯</span>
+                        <div class="lesson-number">2주차</div>
+                        <div class="lesson-title">수 범위 나타내기</div>
+                        <div class="lesson-description">
+                            수의 범위를 기호로<br>
+                            나타내는 방법을 익혀요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">🔍</span>
+                        <div class="lesson-number">3주차</div>
+                        <div class="lesson-title">어림하기</div>
+                        <div class="lesson-description">
+                            수를 반올림하여<br>
+                            어림값을 구해요!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2단원: 분수의 곱셈 -->
+            <div style="background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 15px; padding: 20px; margin: 20px 0; color: white;">
+                <h3 style="margin-bottom: 15px;">🧮 2단원: 분수의 곱셈 (4~6주차)</h3>
+                <div class="lessons-grid">
+                    <a href="week_4_ko_el_5_2.html" class="lesson-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <span class="lesson-emoji">📖</span>
+                        <div class="lesson-number">4주차</div>
+                        <div class="lesson-title">분수×자연수 곱셈</div>
+                        <div class="lesson-description">
+                            분수에 자연수를 곱하는 방법을<br>
+                            재미있는 애니메이션과 함께 배워요!
+                        </div>
+                    </a>
+                    
+                    <a href="week_5_ko_el_5_2.html" class="lesson-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <span class="lesson-emoji">🎯</span>
+                        <div class="lesson-number">5주차</div>
+                        <div class="lesson-title">분수×분수 곱셈</div>
+                        <div class="lesson-description">
+                            분수와 분수를 곱하는 방법을<br>
+                            시각적 모델로 쉽게 이해해요!
+                        </div>
+                    </a>
+                    
+                    <a href="week_6_ko_el_5_2.html" class="lesson-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <span class="lesson-emoji">🧮</span>
+                        <div class="lesson-number">6주차</div>
+                        <div class="lesson-title">분수 곱셈 활용하기</div>
+                        <div class="lesson-description">
+                            실생활 문제에서 분수 곱셈을<br>
+                            활용하며 문제해결력을 키워요!
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 3단원: 합동과 대칭 -->
+            <div style="background: linear-gradient(135deg, #4facfe, #00f2fe); border-radius: 15px; padding: 20px; margin: 20px 0; color: white;">
+                <h3 style="margin-bottom: 15px;">🔷 3단원: 합동과 대칭 (7~9주차)</h3>
+                <div class="lessons-grid">
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">📐</span>
+                        <div class="lesson-number">7주차</div>
+                        <div class="lesson-title">도형의 합동</div>
+                        <div class="lesson-description">
+                            합동인 도형의 성질을<br>
+                            알아보아요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">🔄</span>
+                        <div class="lesson-number">8주차</div>
+                        <div class="lesson-title">선대칭 도형</div>
+                        <div class="lesson-description">
+                            대칭축을 찾고 선대칭<br>
+                            도형을 그려보아요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">🎨</span>
+                        <div class="lesson-number">9주차</div>
+                        <div class="lesson-title">점대칭 도형</div>
+                        <div class="lesson-description">
+                            점대칭 도형의 성질을<br>
+                            이해해보아요!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 4단원: 소수의 곱셈 -->
+            <div style="background: linear-gradient(135deg, #a8edea, #fed6e3); border-radius: 15px; padding: 20px; margin: 20px 0; color: #2c3e50;">
+                <h3 style="margin-bottom: 15px;">🔢 4단원: 소수의 곱셈 (10~12주차)</h3>
+                <div class="lessons-grid">
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">🔢</span>
+                        <div class="lesson-number">10주차</div>
+                        <div class="lesson-title">소수×자연수</div>
+                        <div class="lesson-description">
+                            소수에 자연수를 곱하는<br>
+                            방법을 배워요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">🎲</span>
+                        <div class="lesson-number">11주차</div>
+                        <div class="lesson-title">소수×소수</div>
+                        <div class="lesson-description">
+                            소수끼리의 곱셈을<br>
+                            정확하게 계산해요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">⚡</span>
+                        <div class="lesson-number">12주차</div>
+                        <div class="lesson-title">소수 곱셈 활용</div>
+                        <div class="lesson-description">
+                            실생활에서 소수 곱셈을<br>
+                            활용해보아요!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 5단원: 직육면체 -->
+            <div style="background: linear-gradient(135deg, #ff9a9e, #fecfef); border-radius: 15px; padding: 20px; margin: 20px 0; color: #2c3e50;">
+                <h3 style="margin-bottom: 15px;">📦 5단원: 직육면체 (13~15주차)</h3>
+                <div class="lessons-grid">
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">📐</span>
+                        <div class="lesson-number">13주차</div>
+                        <div class="lesson-title">직육면체와 정육면체</div>
+                        <div class="lesson-description">
+                            직육면체와 정육면체의<br>
+                            특징을 알아보아요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">🏗️</span>
+                        <div class="lesson-number">14주차</div>
+                        <div class="lesson-title">겨냥도와 전개도</div>
+                        <div class="lesson-description">
+                            직육면체의 겨냥도와<br>
+                            전개도를 그려보아요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">📏</span>
+                        <div class="lesson-number">15주차</div>
+                        <div class="lesson-title">직육면체의 부피</div>
+                        <div class="lesson-description">
+                            직육면체의 부피를<br>
+                            구하는 방법을 배워요!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 6단원: 평균과 가능성 -->
+            <div style="background: linear-gradient(135deg, #ffecd2, #fcb69f); border-radius: 15px; padding: 20px; margin: 20px 0; color: #2c3e50;">
+                <h3 style="margin-bottom: 15px;">📊 6단원: 평균과 가능성 (16~18주차)</h3>
+                <div class="lessons-grid">
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">📊</span>
+                        <div class="lesson-number">16주차</div>
+                        <div class="lesson-title">평균 구하기</div>
+                        <div class="lesson-description">
+                            여러 수의 평균을<br>
+                            구하는 방법을 배워요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">🎲</span>
+                        <div class="lesson-number">17주차</div>
+                        <div class="lesson-title">가능성과 확률</div>
+                        <div class="lesson-description">
+                            일이 일어날 가능성을<br>
+                            말과 수로 나타내요!
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-card coming-soon">
+                        <span class="lesson-emoji">🎓</span>
+                        <div class="lesson-number">18주차</div>
+                        <div class="lesson-title">종합 정리</div>
+                        <div class="lesson-description">
+                            5학년 2학기 수학을<br>
+                            모두 복습해요!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>
+                <span class="footer-emoji">🌟</span>
+                즐겁게 수학을 배우며 실력을 키워나가요!
+                <span class="footer-emoji">🌟</span>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                Made with ❤️ for 5th Grade Students
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 페이지 로드 시 환영 메시지
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                console.log('🎉 재미있는 수학 교실에 오신 것을 환영합니다! 🎉');
+            }, 1000);
+        });
+
+        // 카드 클릭 시 부드러운 전환 효과
+        document.querySelectorAll('.lesson-card:not(.coming-soon)').forEach(card => {
+            card.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 클릭 효과
+                this.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 150);
+            });
+        });
+
+        // 곧 출시 예정 카드 클릭 시 메시지
+        document.querySelector('.coming-soon').addEventListener('click', function() {
+            alert('🚀 곧 새로운 수학 수업이 추가될 예정입니다!\n조금만 기다려주세요! 😊');
+        });
+    </script>
+</body>
+</html>

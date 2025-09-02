@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "WebFetch(domain:claude.ai)",
+      "Read(d:\\claude-win\\수학교재만들기/**)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git push:*)",
+      "mcp__sequential-thinking__sequentialthinking",
+      "mcp__filesystem__list_directory",
+      "WebSearch",
+      "WebFetch(domain:www.origoeducation.com.au)",
+      "WebFetch(domain:www.pbslearningmedia.org)",
+      "WebFetch(domain:terrysteachingtidbits.com)",
+      "WebFetch(domain:www.scaffoldedmath.com)",
+      "WebFetch(domain:livelaughlovetolearn.com)",
+      "WebFetch(domain:mathsnoproblem.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
